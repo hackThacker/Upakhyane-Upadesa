@@ -1,2305 +1,277 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&family=Noto+Serif&display=swap" rel="stylesheet">
-  <title>Upakhyane Upadesa</title>
-<style>
-/* Reset */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 100px;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: #f7fbff;
-  color: #222;
-  line-height: 1.6;
-  font-size: 16px;
-}
-
-/* Header */
-header {
-  background: linear-gradient(90deg, #0d47a1, #1976d2);
-  color: #fff;
-  padding: 20px 15px;
-  text-align: center;
-}
-header h1 {
-  font-family: 'Lora', serif;
-  font-size: 2rem;
-  margin-bottom: 5px;
-}
-header h3 {
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
-  opacity: 0.9;
-}
-
-/* Navigation */
-nav {
-  background: #1976d2;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.menu-container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  max-width: 1200px;
-  padding: 20px 45px;
-  position: relative;
-  flex-wrap: wrap; /* for smaller screens */
-}
-
-/* Menu toggle button */
-#menuToggle {
-  background: #0d47a1;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin-right: 15px;
-}
-#menuToggle:hover {
-  background: #0b3d91;
-}
-
-/* TOC Menu */
-ul#toc {
-  list-style: none;
-  margin: 0;
-  max-height: 0;
-  overflow-y: auto;
-  transition: max-height 0.4s ease-in-out;
-  background: #1565c0;
- 
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  width: 250px;
-}
-ul#toc.show {
-  max-height: 90vh; /* responsive max height */
-}
-ul#toc li {
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-ul#toc li:last-child { border-bottom: none; }
-ul#toc li a {
-  color: #e3f2fd;
-  text-decoration: none;
-  display: block;
-  padding: 10px 15px;
-  transition: background 0.2s;
-}
-ul#toc li a:hover {
-  background: #0d47a1;
-}
-
-/* Desktop menu - left of toggle */
-@media (min-width: 769px) {
-  ul#toc {
-    position: absolute;
-    top: 100%;
-    left: 0; /* align menu left of toggle */
-    transform: none;
-  }
-}
-
-/* Mobile menu */
-@media (max-width: 768px) {
-  #menuToggle {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-  ul#toc {
-    width: 100%;
-    max-width: none;
-    position: static;
-    transform: none;
-  }
-}
-
-/* Main content */
-main {
-  max-width: 900px;
-  margin: auto;
-  padding: 30px 20px;
-  min-height: 100vh;
-}
-h2 {
-  font-family: 'Lora', serif;
-  font-size: 1.8rem;
-  color: #0d47a1;
-  margin-top: 60px;
-  border-bottom: 3px solid #F4C430;
-  padding-bottom: 8px;
-  letter-spacing: 0.5px;
-}
-p {
-  margin: 15px 0;
-  text-align: justify;
-  font-size: 1rem;
-  color: #333;
-}
-.purport {
-  background: #e3f2fd;
-  border-left: 5px solid #36A420;
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 8px;
-  font-family: 'Lora', serif;
-  line-height: 1.7;
-  color: #2e3c50;
-}
-.verse {
-  font-family: 'Noto Serif', serif;
-  font-size: 1.2rem;
-  line-height: 1.5;
-  white-space: pre-line;
-  text-align: center;
-  margin: 20px auto;
-  max-width: 500px;
-  padding: 15px;
-  border-left: 5px solid #9D273C;
-  background: #f9f5f0;
-  color: #333;
-  border-radius: 5px;
-}
-
-/* Back to top button */
-#backToTop {
-  position: fixed;
-  bottom: 25px;
-  right: 25px;
-  background: #1877F2;
-  color: white;
-  border: none;
-  padding: 15px 18px;
-  border-radius: 50%;
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: background 0.3s, transform 0.2s;
-}
-#backToTop:hover {
-  background: #0d47a1;
-  transform: scale(1.1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  header h1 { font-size: 1.6rem; }
-  header h3 { font-size: 0.9rem; }
-  main { padding: 20px 15px; }
-  h2 { font-size: 1.5rem; }
-  .verse { font-size: 1.1rem; max-width: 95%; padding: 12px; }
-}
-</style>
-
-
-</head>
-<body>
-
-  <header>
-    <h1>Upakhyane Upadesa</h1>
-    <h3>Instructive Stories from Srila Bhaktisiddhanta Sarasvati Thakura</h3>
-  </header>
-
-  <nav>
-    <div class="menu-container">
-      <button id="menuToggle" aria-label="Toggle navigation menu">☰ Menu</button>
-      <ul id="toc"></ul>
-    </div>
-  </nav>
-
-  <main id="content">
-    <h2 id="story1">A Lesson on Geometry</h2>
-    <p>There was once a poor widow who, through great hardship, was struggling to bring up her
-      only son. As she realised that he was her only hope for the future, she appointed a tutor
-      for him although she would sometimes have to borrow the money to pay for the tuition
-      fees.
-      Once, after being promoted to class VII, the boy was being taught Geometry by the
-      teacher in English. As soon as the boy read out loud, Let ABC be a triangle, the boy’s
-      mother rushed into the classroom and screamed at the teacher thus :
-      This boy is supposed to be advancing in his studies after being raised to class VII, but
-      you are still teaching him ABC - he learned all this when he was an infant - and to think I
-      am paying you 10 rupees a month! From today you are no longer required here. You are
-      only fit for teaching a primary school if all you can teach is ABC!
-      The widow’s outburst was so violent that it left no scope for the teacher to argue and he
-      was compelled to leave the place</p>
-    <div class="purport">
-      <p>The arguments put forward by persons desiring other than Krsna consciousness, along
-        with the karmis, jnanis, yogis, ascetics and the like, including so-called religious
-        communities, are similar to those expressed by the widow. They say, We have become
-        totally worthless through serving all the time in this world. This sort of slave-like
-        mentality is the root cause of all troubles. If we were to accept servitude even after
-        entering into the domain of religion, and to serve Godhead in complete servitude even
-        after liberation, then how will we advance? Only when we are ignorant, and conditioned
-        under illusion, then our slave mentality is intensified. But upon liberation, the realisation
-        aham brahmasi that I am Brahman should be developed. Upon listening to such an
-        argument, pure devotees will argue that devotion or service to Godhead is the eternal
-        position of all conscious living entities. Such devotion, when cultivated through different
-        stages of performing devotional service (sadhana bhakti), ecstatic devotion (bhava
-        bhakti), and loving devotion (prema bhakti) , confirms verily the eternal utility of
-        devotion itself.
-        Servitude to Lord Krsna while performing devotional activities is known as sadhana
-        bhakti (performing devotion), whereas intimate servitude or service to Sri Krsna, after
-        liberated realisation, is prema bhakti (loving devotion). Service to Godhead in the
-        liberated stage is irresistible service (apratihata seva).
-        A,B,C,D or ka-kha-ga-gha may be practised while learning the alphabet on the
-        elementary level; then again even after becoming the topmost man of letters, one has to
-        cultivate the variegatedness and artistic delicacy of that very alphabet.
-        Those who are impersonalists, speculate just like the widow as narrated in this story,
-        advocating that A,B,C,D should only be practised by children in the elementary level and
-        that these letters are of no use to any learned person.
-        It is not that servitude to Sri Krsna should be offered only during devotional performance,
-        but it must be renewed even upon attaining perfection through liberation as service to
-        Lord Krsna is our eternal profession. Servitude or service offered to Lord Krsna is our
-        eternal profession. Servitude or service offered to Lord Krsna after attaining the stage of
-        liberation is to be considered as real and the most perfect form of service. Servitude to
-        illusion (Maya) and servitude to Lord Sri Krsna should never be considered equal.</p>
-    </div>
-
-    <h2 id="story2">The Exploding Frog</h2>
-    <p>There was once a frog that lived in a pond. One day, her son happened to see an elephant
-      near a tank. The baby frog returned to it’s mother and enthusiastically told her, Mother,
-      today I saw a huge animal!
-      The mother frog asked, Really? How big was the animal?
-      The baby frog replied, Oh, it was much bigger than you are.
-      The frog puffed up her body and asked, This much bigger?
-      The baby replied, Oh no, much bigger.
-      The mother puffed up her body more and asked, Even this much bigger?
-      Her child replied, No, no mother, much bigger than that.
-      In this way the mother frog gradually puffed up her body more and more and each time
-      the baby-frog would continue to tell her, much bigger, much bigger.
-      Finally, while trying to puff up her body beyond limit, the frog’s belly exploded with a
-      big bang</p>
-    <div class="purport">
-      <p>The insignificant living entities who consider themselves as para-brahma (para =
-        supreme, brahma = Absolute Being), or as if nothing is equal to or greater than
-        themselves in spite of the fact that they’re simply misconceived insignificant entities
-        constitutionally engaged in devotional service, take a fancy to be equal in perfection with
-        a liberated soul. They are usually destroyed like a puffed-up frog due to their false ego.
-        Sri Caitanya Mahaprabhu has said :
-         <div class="verse">
-        jnani jivanmukta dasa painu kari mane
-        vastutah buddhi suddha nahe krsna-bhakti vine
-
-        mayadhisa mayavasa, isvare jive bhed 
-        hena jive isvara-sah kaha ta’ abhed 
-
-        prabhu kahe-visnu visnu iha na kahiva 
-        jivahame ‘krsna’-jnan kobhu na koriva
-        
-        sannyasi - cit-kana jiva, kirana-kana-sama
-        sadoisvaryapuna krsna hoy suyopama
-        
-        jiva, isvara-tattva-kobhu nahe ‘sama’ 
-        jvaladagnirasi jaiche sphulingera ‘kana’
-
-        jei mudha kahe, -jiva isvara hoy ‘sama’
-        sei ta’ ‘pasandi’ hoy, dande tare yama 
-        </div>
-        There are many philosophical speculators ( jnanis) belonging to the Mayavada school
-        who consider themselves liberated and call themselves Narayana. However their
-        intelligence is not purified unless they engage in Krsna’s devotional service. (Caitanya -
-        caritamrta - Madhya Lila 24.29)
-        The Lord is the master of the potencies, and the living entity is the servant of them. That
-        is the difference between the Lord and the living entity. However, you declare that the
-        Lord and the living entities are one and the same. (Cc - Madhya Lila 6.162)
-        Sri Caitanya Mahaprabhu immediately exclaimed, Visnu! Visnu! Do not call Me the
-        Supreme Personality of Godhead. A jiva cannot become Krsna at any time. Do not even
-        say such a thing!
-        A sannyasi in the renounced order is certainly part and parcel of the complete whole, just
-        as a shining molecular particle of sunshine is part and parcel of the sun itself. Krsna is
-        like the sun, full of six opulences, but the living entity is only a fragment of the complete
-        whole.
-        A living entity and the Absolute Personality of Godhead are never to be considered
-        equal, just as a fragmental spark can never be considered the original flame. ( Cc -
-        Madhya Lila 18.111-113)
-        A foolish person who says that the Supreme Personality of Godhead is the same as the
-        living entity is an atheist, and he becomes subject to punishment by the superintendent of
-        death, Yamaraja. (Cc - Madhya Lila 18.115)
-        N.B.
-        By narrating this fable of the exploding frog, Srila Bhaktisiddhanta Sarasvati Gosvami
-        Prabhupada used to instruct that it is better to be a good man than to be a big one. I am
-        Brahaman, I am siddha , I am Vaisnava , I am pandita , I am self - realized -
-        this sort of false ego is the root cause of the fallen entities’ bondage. One who is
-        enlightened with pure devotion for Sri Hari, never conceives himself to be the lord of this
-        material nature or the enjoyer of this material world, as a great worker, a great preacher,
-        and the like. Such a person should realize himself as insignificant as eternal dust-particles
-        under the feet of his spiritual master and of all the Vaisnavas. He possesses a very candid
-        humility all the time in his heart. A living entity can never be para-brahma, just as
-        Ravana can never be Lord Sri Ramachandra</p>
-    </div>
-
-    <h2 id="story3">The Golden Stone Pot</h2>
-    <p>A wealthy landlord called upon a goldsmith in his village and requested him while giving
-      him a lump of pure gold, You are to make a nice pot for my milk with this gold. You
-      should not make it in any way impure by mixing any kind of alloy in it.
-      The goldsmith agreed, Yes sir, and went away with the gold-lump.
-      Thus getting a lump of pure gold in his possession, the goldsmith was tempted to steal
-      it. However, he apprehended that he would be punished by the landlord if he cheated him
-      entirely, so he made up a plan to prepare a stone-pot and gold-plate it so that he would not
-      be accused of stealing the gold.
-      When the goldsmith took the gold-plated stone pot to the landlord, the landlord asked
-      him in great astonishment, What is this thing you have brought?
-      The goldsmith replied, O sir! This is a golden pot. I have made it with hard labour.
-      The landlord said, Are you joking? This is a stone pot!
-      The goldsmith told him, O sir, this is a ‘golden’ stone pot</p>
-    <div class="purport">
-      <p>Those who consider casteism among the Vaisnavas, classifying them as brahmanaVaisnavas, ksatriya-Vaisnavas,
-        vaisya-Vaisnavas, sudra-Vaisnavas, or as candalaVaisnavas, simply indulge in a speculative inference as "golden"
-        stone pot. Either one
-        should be considered as `Vaisnava', or as brahmana, ksatriya, vaisya, or sudra. Either one
-        should call it a `golden pot', or a `stone pot.' Mango-cake (amsatva) must be prepared from
-        mango itself, and no one can call something `mango cake' if it is made of `jackfruit'
-        (knathaler amsatva). Similarly, it would be wrong terminology to ascribe the quality of a
-        sudra to a Vaisnava. Whenever one is accepted to be a `Vaisnava', then it is confirmed that
-        he does not belong to any mundane social classification such as brahmana, ksatriya, vaisya,
-        sudra or low-born candala and the like, nor even Hindu or non-Hindu. Any terminology
-        such as `Hindu-Vaisnava' or `Yavana-Vaisnava' is utterly absurd and also offensive</p>
-    </div>
-
-    
-    <h2 id="story4">Yes, No, Very Good</h2>
-    <p>A simple villager picked up some English through listening. He memorized only a few
-English words, such as `Yes' and `No', and `Very good'. But he never attempted seriously to
-understand the application of these words in the proper context. He only knew that a sort of
-respect for an `English-speaking' person could be attained by using those words in front of
-people.
-Once a few dacoits made a plan to commit a murder and then escape making it look as if
-that villager had been the culprit.
-When the villager was brought to the law court, the judge asked him in Bengali, "Did you
-commit the murder ?"
-The foolish villager thought that if he could speak some English in front of the judge, then
-the judge might have great respect for him, considering him to be a follower of Western
-culture, and thus he may be relieved from the allegation of murder.
-Contemplating thus, the villager replied to the judge, "Yes!"
-The judge asked, "Was there anyone else with you?"
-Promptly the villager replied, "No!"
-Then the judge said, "Do you realise that you will have to go to jail?"
-Now the villager thought that he should put forth his protest against such an injustice by
-applying his last resort. In order to confirm that he was a perfect gentleman, and that he did
-not commit the murder, and that he should never be thrown in prison, he replied to the
-judge's question, saying, "Very good!"</p>
-    <div class="purport">
-      <p>Even in the field of devotional service, many people often deliver a lot of scriptural quotes
-in a parrot-like fashion, without proper understanding of the instructions, religious
-terminology and the injunctions that they receive from the pure devotees. They simply
-hanker for respect from the people in that manner.
- But eventually their position becomes similar to that of this villager. In the case the
-scriptural quotes and authoritative injunctions are not properly assimilated and digested, the
-righteous community never appreciates them. It is also not possible to be released from the
-clutches of `maya' or illusion through such a parrot-like verbiage.
-It is often observed in pubic meetings, assemblies and popular mundane literature that many
-so-called "men-of-letters of modern civilisation deliver such ludicrous verbosity on the
-subjects of devotion, devotees, and the Supreme Godhead. Pure devotees simply consider
-those deliberations similar to those of the villager mentioned above, who did not realize
-anything beyond `Yes, No, Very good. ‘Those persons are ultimately destined to suffer
-imprisonment under the merciless clutches of `maya'</p>
-    </div>
-
-    <h2 id="story5">Honey and the Foolish Bumblebee</h2> 
-<p>Once a bumblebee saw a transparent glass bottle full of honey, and it wanted to enjoy the
-contents. Without realising that the honey was covered by the glass bottle, the foolish bee
-tried again and again to relish it.
-Sitting upon the bottle, the bee concluded finally that it had relished the honey. In fact, it
-could not even touch the honey, not to speak of relishing its sweetness. The bee was simply
-self-deceived. </p>
-<div class="purport">
-  <p>The materialistic persons and commonplace so-called vaisnavites believe that they have
-relished the nectar of devotion. In fact, they can not even discover the source of
-transcendental mellows of devotion, Lord Krsna.
- In modern times, some people while listening to chanting and performing musical
-recitations of the compositions of such stalwarts like Candidas, Vidyapati and the like on
-the pastimes of Lord Sri Krsna, believe that they have relished the transcendental mellows
-of love from Lord Sri Krsna. In fact, they never reach the province of Lord Sri Krsna's
-pastimes or His transcendental mellows.
- Some awful religious renegade and turbulent heretic like Kalapahadh, the notorious
-iconoclast, may think that they can demolish and destroy Deities and temples of the
-Supreme Godhead, or some egotistic so-called preachers may boast of finding out quite a
-good number of faults and discrepancies in the holy scriptures like Srimad Bhagavatam and
-Srimad Bhagavad Gita!
- Even Ravana, the great king of demons, intended to abduct Sita Devi with an idea of
-enjoying her. In fact, they could not even have a look at the object of their lust and desire,
-not to speak of touching them. Ravana simply deceived himself by abducting only the
-shadow-form of Sita Devi and failed in his attempt to enjoy her.
- If anyone tears up a map of India in anger and jealousy, and thinks that he has destroyed
-the entire state of India, then it is nothing but his foolishness. Similarly, people who are
-inclined to go against Sri Hari and the spiritual masters including all Vaisnavas, under the
-illusory materialistic knowledge, simply expose themselves as the most foolish entities on
-this earth.
- Sri Caitanyadeva has said:
- <div class="verse">
- aprakrta vastu nahe prakrta gocar 
- vede puranete ei kahe nirantar
-</div>
- "Spiritual substance is never within the jurisdiction of the material conception. This is
-always the verdict of the Vedas and Puranas."
- (Cc.Madhya Lila 9.195)</p>
-</div>
-
- <h2 id="story6">Seeing the Sun in the Night</h2> 
-<p>A fanciful landlord once became very anxious to see the sun in a new-moon night sky. The
-flattering sycophants of the landlord said, "When you, our lord, desires, it must be fulfilled.
-We should set up in this world such an exemplary deed so that everyone will glorify you
-and follow the same example."
- Flattering thus, one of the sycophants brought in a huge lantern and held it up towards the
-sky, saying, "Look here, my lord, can you see the sun?"
- Two other sycophants then pleaded, "The sun cannot be seen in such a little amount of
-light from one lantern. Let us arrange for ten crores of candle-power lighting."
- So even that was arranged for, as the landlord desired. Some of the scientific-minded
-friends of the landlord made an attempt to show the sun to the landlord with the help of
-powerful electric lighting arrangement. But all such efforts made by the scientists concerned
-were simply in vain.
- Then a considerate person who was present there explained to the landlord that he could
-never see the sun in the night even if all the electric lighting arrangements in the world were
-assembled together -it would simply be a wastage of power, money and time. So, he must
-wait till sunrise to see the sun. Only with the help of sunshine can one see the sun. The sun
-can never be seen with the help of any other artificial light</p>
-<div class="purport">
-  <p>Similarly, every attempt of the materialistic scientists, archaeologists, and other people
-under illusion, to see and realize the eternal form of the transcendental Supreme Lord, full
-of bliss and knowledge, with the help of so-called mundane knowledge acquired through
-material senses and speculative reasoning, is only self-deceiving.
- As the sun can never be seen in the night even with the help of hundreds of artificial
-lighting arrangements, similarly, the constitutional form of Lord Sri Hari and the spiritual
-master and the Vaisnavas is never visible through hundreds of attempts with the help of
-so-called mundane knowledge acquired by the material senses of the living entities.
- As the sun is visible only in the sunlight, realization of the truly constitutional forms of
-Lord Sri Hari, guru or the Vaisnava, will only be possible under their mercy. The spiritual
-master can not be assessed through a slighted understanding. Any living being
-conditioned under illusionary mentality can not make a proper assessment of Lord Krsna,
-the Supreme Controller of illusion and of the real Vaisnava who is conversant with Krsna
-Consciousness</p>
-</div>
-
- <h2 id="story7">A Family for the Gita</h2> 
-<p>Once a renounced spiritual master presented his disciple with the copy of the holy Gita,
-advising him to study the book all the time. The disciple started study of the Gita sitting
-inside a cave on the Vindhya Hills.
-A small mouse in the cave started eating the pages of the Gita everyday. Thus being
-extremely perturbed with the mischief caused by the mouse, the disciple brought a kitten
-from a nearby village. Then milk was required for the maintenance of the kitten.
-Considering all the related problems of acquiring milk everyday, the need for keeping a
-cow was very strongly felt by the disciple. By the grace of the Lord, a kind-hearted person
-gifted one cow. Now an anxiety for maintaining the cow loomed large in the heart of the
-disciple. So that the cow might stay safely and comfortably, the renounced disciple built a
-barn with much labour and effort.
-Thereafter came the anxiety for day-to-day care and maintenance of the cow, providing
-her with regular fodder and water. Over and above this, the renounced disciple was very
-much anxious about spoiling his devotional performances while caring for the cow, and
-as such he decided to appoint a cowherd.
- The cowherd took charge of maintaining the cow. But then, who was going to feed the
-cowherd, and look after his duties regularly? So, after much deliberation finally the
-anxious sannyasi got married.
-Gradually, his family swelled up. He acquired vast property, manpower and a big place.
-The sannyasi thus became an out-and-out family man, leaving aside his study of the Gita.
- After a long lapse of time, his spiritual master, trying to find out his disciple's
-whereabouts, happen to come to the front of the disciple's place. Looking at the material
-opulence, and the host of family members of the sannyasi, he asked him, "What is all this
-?"
- Then the disciple submitted everything with folded hands in front of his spiritual master,
-"O master, this is the family I had to build up for the sake of your Gita, you remember ?" </p>
-<div class="purport">
-  <p>A truly Krsna conscious person should not increase the magnitude of his wants and
-requirements to the name of `yukta-vairagya' (proper renunciation). A living entity
-engaged in devotional service should never consider himself to be equal in status and
-position with a perfectly liberated great soul.
-One who is engaged in devotional service, either as a sannyasi or as a grhastha, must
-adhere strictly to the scriptural injunction which prescribes thus: `yavannirvaha
-pratigraha' - he should endeavour only for that much which is essentially required in
-favour of worshipping Sri Hari. His material activities should neither be excessive, nor
-very scanty as either of them leads to diversion from spiritual upliftment.
-Persons undertaking the rigours of celibacy (brahmacarya), seclusion (vanaprastha), and
-renunciation (sannyasi) as their ways of living (asrama) and so staying in a secluded holy
-place such as a math, away from home for engrossing themselves in the devotional
-services to Lord Sri Hari, might also find themselves entangled in such a `family' for the
-sake of the Gita, in case they become enchanted with the thoughts of daily wants and
-requirements, thus deceiving themselves in the name of favouring devotional services to
-Lord Sri Hari. So, an honest person must be careful. he must not fall under the clutches of
-illusory energy (maya) while pretending to acquire favourable objects for devotional
-services to Sri Hari. The material senses are always thirsty for objects of sense
-gratification.
-Pretending to attain perfection through carefully listening and adhering to myriads of
-injunctions from great liberated souls, our wicked, mischievous, uncontrollable,
-extroverted mind along with it's propensities, endeavours to acquire gratifying objects
-falsely ascribing them as favourable to devotional service to Sri Hari, while taking
-recourse to hypocritical diplomatic demeanours.
-Many of us become highly attracted to material knowledge. In the name of studying
-scriptures or learning erudition !
- We become much attached to physical comfort and to our dependant wife and children
-through self-deception of undergoing family life with a plea to observe `yukta-vairagya'
-(proper renunciation) and offering devotional services to Lord Sri Hari simultaneously.
-Even after becoming a sannyasi, a bramhacari, a Krsna conscious grhastha or a
-vanaprastha, many of us desire to attain material reputation and fame and we try to lord it
-over everything. This will cause us utter spiritual destruction.
- It is therefore most essential to pray for the mercy of pure honest devotees, constantly
-keeping ourselves in their uncontaminated association with complete loyalty and
-allegiance and thus exposing before them all our misgivings so that we may be blessed
-with their inestimable guidance</p>
-</div>
-
- <h2 id="story8">There Runs the Thief!</h2> 
-<p>There was once a village that was plagued with constant theft. The villagers were unable
-to detect the thief in spite of all efforts. Whenever the people were alerted, the thief
-would run away. A hue and cry would be raised by the people, and the villagers gathered
-only to be disappointed.
- Finally, the headman in the village called for all the victims of the theft individually
-and questioned them in confidence. Upon a through inquiry, he discovered that one
-particular person was found to be present and anxious to find out the thief every time
-there had been a crime.
- The village headman became suspicious at this coincidence. Therefore he devised a
-plan and advised the village guard to keep an eye on the suspected person at his house
-from midnight and report his movements. The headman himself was also carefully
-watching the guard and regularly supervised his duties.
- One night the guard saw the suspect coming out of his house at about 2 o’ clock, hiding
-a burglar’s tool for house-breaking under his shawl.
- As the guard followed him, making sure that he was hidden from view, he observed the
-suspected man breaking through the wall of a villager’s house with the help of a burglar’s
-tool. After a while, the house owner started screaming, Thief, thief!!, and the guard
-watched as the suspected man came out of the house with the stolen goods and hurriedly
-entered into the nearby jungle.
- When the villagers gathered as usual after the house owner started screaming for help,
-the suspected man came out of the opposite side of the jungle and innocently joined the
-crowd of villagers inquiring about the incident. He was just pretending to look for the
-thief and running up and down in all directions. Thus coming across the village guard
-patrolling nearby, he caught hold of him and started shouting, Here is the burglar, here is
-the burglar!.
- Attracted by his screaming, the people gathered around them and started jeering at the
-guard, taking him to be the burglar. Some of them were preparing to beat him.
- Luckily, the village headman appeared on the spot and appeasing them, he took the
-guard to the side and asked him to give a complete report on the incident. He advised
-some other villagers to observe the reactions of the man who was the real culprit.
- Thereafter, he proceeded towards the jungle as directed by the guard, along with other
-people, while the thief repeatedly asked them, Why on earth are you going into the
-jungle for the burglar? On this dark night, that snake-infested jungle is most dangerous.
-No burglar can hide himself in there, for sure !
- When everyone was walking into the jungle, disregarding his constant grumbling, the
-man started gradually backing away with the idea of running off. It appeared from his
-face that he was greatly frightened.
- Eventually, the jewellery box which the thief had taken from the villager’s house was
-found in the jungle along with the burglar’s tool. It was then crystal-clear to everyone
-present that the man complaining was the burglar himself, and so the crowd ran out of the
-jungle and started chasing him. As he was running away, they all shouted out, There
-goes the thief. there goes the thief!.
- The cunning thief also started shouting while running, There goes the thief, there
-goes the thief, and pointing to all the innocent passers-by, he got away by creating an
-utter confusion</p>
-<div class="purport">
-  <p>There is no dearth of such mischievous atheists among the people. they constantly malign
-the real protectors of the society who are like watchmen, and harass those great souls who
-are truly and selflessly benevolent to common people, only to tarnish their reputation by a
-vile attempt to prove those saintly persons as `thieves’ and the like.
- In all Vedic literature, Gita, Bhagavata, Upanisads etc., it has been specifically
-advocated that this material world belongs to the Supreme Lord, he is the proprietor of
-everything, and one who does not offer everything to the Supreme Lord for His
-satisfaction through preaching His glories and the holy name, simply devours His
-property for one’s own sense gratification, and as such, he is a thief.
- Such a thief is always endeavouring to indicate that any person who is preaching the
-holy name of the Supreme Godhead, and going from door to door in order to wake
-everyone up from their illusory state of living, is only worthless, idle and a thief of social
-wealth. This is just like the motivated tendency of a thief who points to a sadhu as if he is
-running away from a burglary.
- This is the normal practice we find in this age of Kali. the famous poet Tulasi das wrote
-long ago thus:
- <div class="verse">
-corko chode sadhko bandhe, pathikko lagaoe phansi
-dhanya kalijug teri tamasa, duhkh lage aor hasi
-</div>
-The real thief is released, the saintly person is tied up, and the passer-by is hanged - all
-glories to Kali yugas, such is your great joke that creates pity as well as laughter.
- Some traders who deal in so-called religion, holy scriptures, Gita, Bhagavata, and the
-Deities of Godhead as their economic profession, try to equate selfless preachers of the
-holy name of Lord Hari and the preaching of real saintly persons as an illicit greed for
-money like a professional person.
- They used to say mischievously that one should not only condemn materialistic persons
-when even the saintly persons need money. In fact, this is just like branding a watchman
-as a burglar.
- Money collected by saintly persons for the welfare of the entire world in favour of
-preaching the holy name of Lord Sri Hari, is not meant for spending on maintenance of
-family members like a professional family-man, or for indulging in some illicit
-misdemeanour, or personal sense gratification.
- Real saintly persons collect money and use it wisely. That money is very carefully spent
-in preaching the holy name and opulences of the original proprietor and the Lord of the
-goddess Laksmi in order to ensure eternal welfare to all atheistic, conditioned living
-entities of this material world.
- In fact, persons who try to steal the wealth of the Lord of Laksmi, make an attempt to
-confuse common people by creating a false hue and cry by pointing at real saintly persons
-and showing - There goes the thief, there goes the thief! The envious impersonalists
-only make an attempt to hide themselves with their innate polluted character by shouting
-out at the saintly persons, thief, thief!</p>
-</div>
-
- <h2 id="story9">All Glories to Balam Rice and Cow Ghee!</h2> 
-<p>There was once a landlord in whose house no servant could ever continue to work for
-long. the landlord used to appoint new servants frequently and they would leave the job
-only after a few days. The landlord was much perturbed at this. it was almost impossible
-for him to maintain the household work without any servants.
- One day he was lamenting to one of his friends, How unfortunate I am! Not even a
-single servant could stay! What’s the solution?
- Then the friend advised the landlord, If you follow my advice, then your servant
-won’t leave you even if you want to get rid of him. You recruit any servant and feed him
-with a fine variety of Balam rice with cow ghee twice a day. After maintaining him in this
-manner for six months, then you can give him any kind of job you desire.
- The landlord did as his friend advised. After relishing Balam rice with ghee for six
-months, no other variety of rice was palatable to his servant. Then the landlord, after the
-lapse of six long month, started pressuring the servant with all sorts of rigorous jobs. The
-servant thereafter started making complaints to the assistants of the landlord, I’m going
-elsewhere if so much pressure is continued to be put on me.
-In this way whenever there was a little more work to do, the servant used to say, I won’t
-stay here any longer.
- One day the landlord told him, Go wherever you want! the servant looked for some
-alternative job elsewhere, but he could not have the satisfaction of fine variety Balam rice
-and cow ghee.
- At last he came back helplessly to the houses of the landlord and continued to stay for a
-long time. But whenever there was some additional workload, he used to go elsewhere for
-relief, but as soon as he remembered the satisfaction of Balam rice and cow ghee, he
-would immediately return to the landlord’s house and used to say that he had developed a
-sentiment for the landlord and that’s why he was unable to stay anywhere else in peace.
- After a few years, when the landlord happened to meet his friend, he shouted out in
-great joy, All glories to Balam rice, and cow ghee!</p>
-<div class="purport">
-  <p>This anecdote gives us a moral about the influence of women, money and reputation, for
-which people are desirous. It is very difficult to find a person willing to offer causeless
-devotional service to Lord Hari in this world. Not a single person wants to stay
-steadfastly in the devotional institution of Lord Sri Krsna’s family environment. Only
-motivated with material sense gratification and mundane desires for a few days, some
-would like to pretend to offer services in Lord Krsna’s family and then would revert to
-different aspects of material gain, position, and reputation, religion, wealth, fruitive work
-or liberation to satisfy their thirst for sense gratification.
- With a view to attracting such persons by all means, and to enlighten them of their
-latent potential, all benevolent spiritual masters arrange for Balam rice and ghee to feed
-them. In other words, spiritual masters make every attempt to retain those truant persons
-within the family environment of Lord Krsna by way of providing various sorts of
-position and reputation for them. In the beginning such persons may often play truancy
-by going away from Lord Krsna’s family, but when they continue to receive some award,
-prestige, position. honour etc. in the form of Balam rice and ghee or the like, then some
-of them pretend to show up some sort of s
-oft sentiment towards the landlord or the spiritual master. Thereafter such persons are not
-likely to go away even if they are asked to. Therefore, all glories to Balam rice and cow
-ghee!
- The earnest enterprise on the part of the landlord for the performance of his essential
-services is tantamount to the earnest desire of a spiritual master or a sincere devotee to
-satisfy Lord Sri Gauranga, whereas the servant is very well comparable to all sorts of
-servitors who pretend to serve their spiritual masters in a firm attitude, and Balam rice
-with cow ghee may rightly be thought of as a servitor’s desire for position, honour, and
-reputation</p>
-</div>
-
- <h2 id="story10">Lalu and Kalu </h2> 
-<p>A grocer had two sons - Lalu and Kalu. He wanted them to learn basic measurements on a
-weighing scale and as such, he entrusted his boys to a tutor.
- The boys were so unruly and naughty that a number of tutors proved themselves unable
-to impart this minimum instruction to them.
- Finally, the grocer had to declare that he would give away a half of his grocery business
-to anyone who could educate his two sons in numbers up to one hundred at least.
- Those two boys were, however, full of so many vices that they became addicted to
-smoking even though they were still infants.
- A poor old brahmana, being allured by the lucrative offer, undertook the job of
-teaching them. Their father made a very stringent arrangement so that the boys would
-always stay with their tutor.
- One day, Lalu and Kalu went out for a stroll along with their tutor. As they were
-walking, they came across a cow and the tutor asked Lalu, Could you say how many legs
-this cow has ?
- Lalu started counting the cow’s legs - one, two, three ..... All of a sudden, Kalu stopped
-his brother by closing his brother’s mouth with his hand, saying, O brother! Don’t count
-- he will try to cleverly teach you numbers. Lalu therefore stopped counting as he could
-realize the crafty teaching method of his tutor.
- Another day, Lalu and Kalu were taking rest in one room, along with their tutor. Both
-of them started snoring as if they were in deep sleep, so that the tutor may take them to be
-in deep slumber.
- Their tutor, noting that his pupils were asleep, decided that he would also take rest.
-After a while, Lalu and Kalu began trying to ascertain if the tutor was asleep and being
-assured, they got up, and went outside to smoke to their heart’s content. After finishing
-their cigarettes, they returned to the room and pretended to be sleeping again.
- After a while, when the tutor woke up, he smelt a strong odour of smoke inside the
-room. Immediately he roused the boys from their sleep and started inquiring about the
-smell. His suspicions were confirmed when he smelted their hands.
- Lalu and Kalu continued to defend themselves, crying, O sir, we fell asleep before you,
-we are just waking up now. How could we be smoking, sir? But it’s possible that some
-rascal was smoking with the help of our hands without our knowledge while we were fast
-asleep</p>
-<div class="purport">
-  <p>Those who are determined to accept no advice or instruction for their self-development,
-are reflected in the mode of character as revealed in these two cunning boys, Lalu and
-Kalu. Quite often, many of us do not like to pay any heed to the messages and injunctions
-in our daily activities, only because of our apprehension that they might lead us to a
-domain of peace and welfare.
- Just like Lalu and Kalu, the majority of common people never accept the way to real
-welfare and happiness - they would prefer a pretension of keeping the association of
-saintly persons while continuing their activities of sense gratification in wealth, women,
-and wine.
- It is because we are unable to give up our hypocrisy and sense of foolish individualism
-and independence that saintly persons fail to lead us to real wisdom. Whenever our
-spiritual master sees our inclination to such unworthy activities, we make an attempt to
-defend ourselves with a false plea that we are not really interested in such activities and
-that it is merely that some unscrupulous religious or social leaders have forced us to
-become engrossed in them.
- By nature, all mischievous persons act like this and they put all the blame upon others
-in order to conceal their faults. they try to project their thirst of sense gratification onto
-honest persons</p>
-</div>
-
- <h2 id="story11">Rowing Along the Wind </h2> 
-<p>A landlord once had a sycophantic servant, who was only interested in grabbing
-something for hid own sense gratification by flattering his master.
- One day the landlord asked the sycophant, Could you tell me what kind of vegetable is
-the potato?
- The sycophant replied with an uneasy gesture and folded hands before the landlord, O
-Lord! I pray that your honour may please narrate the nature of potato. Please let us hear
-your wise words on this matter.
- Then the landlord said, Potato is the most delicious of all vegetables in this present
-age.
- Even before the landlord could finish his statement, the sycophant butted in, Yes, my
-Lord! Really delicious! Excellently delicious, pleasantly delicious, highly tasteful and
-dainty! It is said that this round potato - boiled in rice, boiled in water, fried, mixed up in
-a subji, put in a soup or dahl, either in pickle condiment, or in rich gravy, or kofta -
-everywhere in every recipe, this round potato is omnipresent! Is there any other vegetable
-comparable to it? It is simply second to none, - unparalleled!!
- Then the landlord rejoindered, Whatever you say, I should like to assert that potato is
-very agitating and very dull, in spite of the fact that it is tasteful.
- Immediately the sycophant blustered, O yes lord, for sure. It is a really agitatingly
-agitating vegetable, very hot, excessively passionate, very difficult to cool down. My
-lord! We are being plagued by a new wave of unknown diseases nowadays! These are all
-due to this round potato. All sorts of flatulence, cholera, diarrhoea, diabetes, phthisis are
-resulting form this round potato - do you know, my lord ? Potato is certainly the root
-cause of all these troubles.
-The landlord then asked his fawning servant, Well what is your opinion of eggplant?
-The sycophant replied, O lord , let us first hear you, please. What is eggplant like?
-The landlord began, There is nothing bad about an eggplant! As far as I know, eggplant
-is a nice vegetable.
- Again the servant spoke, Yes lord! Let us look at it; there is hardly another beautiful
-vegetable like it. What else is required when we get two pieces of fried eggplant? Then
-even butter is not comparable to it! When one has nothing else in the house, only one
-piece of eggplant could serve the purpose of maintaining prestige of a householder - you
-can roast it, fry it, cook it in a subji, prepare a chutney - any way you like - that eggplant
-proves itself somewhat extraordinary among all vegetables. Still among all varieties of
-eggplant, take lapha eggplant - an excellent creation of the supreme godhead indeed!
- After hearing all this, the landlord replied, Anyhow, there is no nutritious value in an
-eggplant.
-The sycophant said, O my lord ,off cause! That’s why it is called be-gun which means
-no value at potential value, but began, the eggplant is much more inferior to that. An
-eggplant gives more itching trouble in the mouth than any wild turnip or kocu root!
-Eggplant is the root cause of so many troubles. Eggplant carries eternal bad luck. That’s
-why it is often roasted before serving!
- The landlord then retorted saying, You’re a very strange fellow! When I say ‘Potato is
-good ‘ you also repeat,’ Yes, potato is very good’, and when I say ‘it is bad’ , then you
-also start pleading that it is very, very bad. When I said , ‘Eggplant is good’, then your
-appreciation for eggplant knew no bounds. When I said, ‘Eggplant is bad’ deprecating it
-as if it should never be considered as a vegetable. Don’t you possess any personal
-integrity?’
- With folded hands and faltering voice the sycophant explained, O my lord! Please
-have mercy, please forgive my offences. But, to be truthful, I am not a servant of a potato,
-nor of an eggplant - I am simply your servant, my lord! Whatever you say, my lord, I must
-say likewise. Potato will not provide me with a wage packet every month, and eggplant is
-not going to give me a job for my livelihood. I am your servant, so my lord’s voice should
-be my voice. </p>
-<div class="purport">
-  <p>Some people always row with the wind for their own advantage, and express their
-concocted opinions only motivated by their own selfish desires for gaining reputation.
-Sometimes they pretend to be devotees of Lord Sri Caitanya, or patriots, social leaders, or
-simply unmindful lovers, or many other disguises. Basically they are impersonalists, or in
-other words, they do not believe in the eternal holy name, form, qualities, associates and
-pastimes of the Supreme Lord.
- Any appreciation or eulogising of Lord Sri Caitanya expressed by such persons is
-simply their verbal expression, as they are anxious to pose themselves as devotees
-before the common people.
- Many such persons eulogise Lord Sri Caitanyadeva with an ulterior motive of attracting
-some sort of honour and respect from a large community of Vaisnavas. But they are not at
-all interested in relishing the nectar of true instructions bestowed by Lord Sri
-Caitanyadeva who deprecated such renowned ideologies as Buddhism, Sankaracarya
-philosophy, and the doctrines of fruitive work, mundane knowledge and meditational
-yogic philosophy. Those motivated persons do not accept Sri Caitanya Mahaprabhu’s
-advice to worship Lord Visnu only and to consider all other forms of demigods and
-goddesses as subordinate to Lord Visnu. Nor can they endorse wholeheartedly the
-devotional practices of religion, wealth, lust, and liberation.
- This only happens because as there are many followers of Lord Sri Caitanyadeva,
-similarly there exits a number of fanatics in the line of Sri Sankaracarya, Buddha,
-Madhvira Jina, Kumarila Bhatta, Kapila the atheist and the like, who preached nondevotional doctrines among the people.
- In this event, all motivated persons consider it beneficial to their self-interest of
-earning name, fame and reputation to preach the doctrines of other communities than
-those of Sri Caitanyadeva, since these non-devotional communities command a wide
-populace.
- Those who are devoid of the real urge for inquiring into the realm of eternal and
-absolute truth will always hush up the basic doctrines as propagated by Lord Sri
-Caitanyadeva. These people are neither sincere followers of Lord Sri Caitanyadeva, nor of
-Sri Sankaracarya. In fact they are basically opportunists trying to gratify their senses.
- These opportunists are of the opinion that all doctrines are good, but their real nature
-is exposed whenever it is clearly proved that the love for Lord Sri Krsna can never be
-equated with the non-devotional practices for gaining positions in the fields of religion,
-mundane wealth, material enjoyment, and liberation from the cycle of birth, death, old
-age and disease.
- Any attempt in synthesizing all doctrines irrespective of their intrinsic merit is a
-hypocrisy. this was very boldly expressed by Lord Sri Caitanyadeva, with reference to His
-reflections on one of His own devotees, Sri Mukunda Datta Thakura, thus,
- <div class="verse">
-prabhu bale, o beta jakhan yetha jaye 
-sei moto katha kohi tathayi misaye 
-
-vasistha padaye jave advaiter sange 
-bhakti-yoge nace gaye trna kori dante
-
-anya sampradaye giya yakhan sambhaye
-nahi mane bhakti, jathi maraye sadaye
-
-bhakti haite bada ache-ye iha vakhane 
-nirantar jathi more mare sei jane 
- </div>
-Lord Caitanya said : Whenever that rascal (Mukunda) goes to the mayavadis , he
-becomes like them, talking according to their theory. Whenever he studies the yogavasistha with Advaita Acarya, he dances in ecstasy holding straw in his teeth.
-And going to other sampradayas (mayavadis), when he speaks, not only does he neglect
-bhakti, he always attacks bhakti. One who says there is something better than bhakti, is
-beating Me.
-(Caitanya Bhagavata M.10.188-191)
-The person has made offences to devotional service and due to this he will never attain
-Krsna.
- Most of the professional narrators of scriptural and mythological stories, speakers,
-writers, authors etc. Try to entertain common people through their deliberations and
-performances only to attract some sort of material gains and fortunes. In fact, their
-expositions of devotional scriptures, are not truly expressive of their real love and
-devotion for the Supreme Lord</p>
-</div>
-
- <h2 id="story12">Kite-playing on an Unwalled Roof </h2> 
-<p>A dull headed boy was once happily flying a kite from an unwalled rooftop. He became
-so engrossed in playing that he lost his awareness. His playmates were also encouraging
-him very much. The boy got so carried away that he failed to notice that one of his legs
-was hanging over the edge of the roof. None of the other boys alerted him to this peril;
-rather they simply continued to encourage him to fly the kite.
- At that critical moment, a wise man happened to pass by. He saw that the boy was in
-imminent danger of falling from the roof. He immediately rushed up to save the boy
-although the others saw no danger. He pulled the boy away from the edge, tore off the
-thread of the kite and took away the spool of thread.
- But the foolish boy and his friends, rather than feeling thankful, began to curse the wellmeaning gentleman. They called him a thief, rascal, trespasser, gunda, hooligan, ruffian
-and other such names. They even threatened to take the gentleman to court after
-complaining to their over-indulgent parents. Some even tried to physically assault him.
-Bearing all this, the kind-hearted gentleman saved the boy from imminent death. </p>
-<div class="purport">
-  <p>Materialistic persons embrace their certain death by accepting whatever is apparently
-palatable to them. By no means are they prepared to accept anything which is apparently
-bitter but ultimately pleasant. Many of our so-called friends in this material world also
-encourage us in sense gratificatory
-activities that lead us to certain death and destruction.
- By chance if one comes across a benevolent saintly person, he preaches to us out of his
-sheer mercy some real truths although in an unpleasantly stern exposition (like a dose of
-strong medicine) in spite of our unwillingness to accept it. Therefore we should accept
-all good sermons from saintly persons delivered in the cause of our eternal welfare, even
-if those words appear utterly bitter and heart rending. 
-</p>
-</div>
-
- <h2 id="story13">The Physician’s Knife </h2> 
-<p>Amar was a village boy who had been suffering so much from a boil on his back that he
-attempted suicide. His mother and close relatives were all trying to alleviate his pain by
-using hand-fans or even by orally blowing on the swelling boil.
- One of his neighbours advised that the boy should be given some anaesthetic drug to
-save him from such unbearable physical agony. Still another person recommended that it
-was better to relieve him eternally from such a painful experience. His argument was that
-the boy has been suffering terribly because was alive, so, if he were dead he wouldn’t be
-in pain anymore. The result would be complete solace to both the disease and patient.
- Unnerved by such advice, the wise father of the boy immediately sent for an
-experienced physician, disregarding his son’s so called well-wishers. When the physician
-advised that a minor surgery be formed on the boy, the relative including the boy’s
-mother, grandmother and others started weeping all in a row. The ignorant boy also
-started abusing the physician in the most vulgar words, saying, You have come to kill
-me. Leave me alone right now, or I must send for the police to arrest you! Why don’t you
-strike the knife on your own body? Would you go and lynch your own son? I would
-rather take a dose of poison before I surrender myself to your hands for certain death.
- Turning a deaf ear to the boy’s delirious outburst, the physician held him tightly while
-he pressed and executed the surgical operation on the boil. After a while, the boy was
-completely relieved of all agony and gradually became well within a few days.</p>
-<div class="purport">
-  <p>Just like a real physician, quite often the real spiritual masters and saintly persons also
-dissect some of the knots in the obstinate mind of living entities by way of apparently
-distasteful injunctions and instructions varying on the degrees of entanglement. But the
-suffering entity is hardly inclined to agree with such injunctions and instead, misapply a
-lot of harsh words to those saintly persons blaspheming them as their enemies and
-extremely merciless executioners.
- So-called relatives and friends of such suffering entities strongly advocate against such
-a surgical operation to avoid the apparent pain and uneasiness. Some such pseudo-friends
-even in the name of impersonalism advise one to commit suicide to get rid of the rut.
- In fact, none of these ways can be fruitfully undertaken for eternal welfare of an entity.
-The constitutional position of a living entity is only realized after disentanglement from
-all unworthy mundane attachments with the help of saintly injunctions sincerely followed.
-This enables one to enter into the province of devotional service which is the only way to
-eternal bliss and peace of mind</p>
-</div>
-
- <h2 id="story14">Kastvam, Khastvam</h2> 
-<p>Once there lived a brahmana-pandita in a village who was very proud of his family
-tradition of scholastic distinction. In course of time, however, successors of that family
-became a averse to academic pursuits that they used to while away their time in playing
-cards, dice, chess etc. To earn a living they would go to householders to worship their
-Deities, but in fact they were simply cheating the householders and the Deities by
-chanting inaccurate mantras. Yet they boasted everywhere that scholarly persons such as
-themselves were rare in this world, because their bloodstream carried the heritage of
-erudition and the acumen of many many ancient panditas.
- One of the virtuous local people, who was a determined champion of truth, once
-decided to invite a truly erudite personality to his village with a view to smash the vain
-attitude of those so-called panditas.
- As the learned personality came and entered the village, all those false panditas felt
-extremely nervous and rushed immediately to their village chief asking his advice to
-overcome such an averse situation. The village thief was popularly known as Dada
-Thakur among all the villagers and had also earned wide fame as the greatest of all the
-panditas. Assuring all the villagers, he said, Don’t worry. With the heritage of our
-ancestors running in my blood, I will certainly defeat this newly-arrived pandita. I will
-have a conversation with him in Sanskrit, this will certainly make him silent. Then he
-won’t be able to assess anything else or make any firther attempt to criticize us in any
-way. He’ll have to leave this village in disgrace.
- Upon his arrival in the courtyard for the debate, the learned personality found the
-pandita sitting on a high pedestal. The learned person then began by asking the pandita
-by asking the pandita in Sanskrit, Kastvam? or Please introduce yourself. Who are
-you?
- In reply, the village pandita Dada Thakur blurted out, Khastvam,, gastvam, ghastvam,
-castvam, chastvam, jastvam, jhastvam, nastvam, nhastvam, tastvam, thastvam, dastvam,
-dhastvam,..........ksastvam!
- The learned personality realized immediately that it was of no use to continue any more
-dialogue with such a blatant pandita, the sooner he could leave that place the better for
-his own dignity. He offered his obeisances from a distance and when the said learned
-dignitary was about to go away from the place, the disciples and followers of Dada
-Thakur began to laugh loudly and shouted, Just see! Our Dada Thakur is such a great
-pandita! That learned fellow couldn’t even open his mouth in front of him! There must be
-hardly anyone in this world who could talk to our Dada Thakur in Sanskrit! How fluently
-he can speak in Sanskrit!</p>
-<div class="purport">
-  <p>Boasting about their traditional family heritage of brahminical erudition and successive
-association with Lord Visnu, Vaisnavas, saintly persons and scholars of eminence, some
-people speculate that there must have been an acute dearth of real Vaisnavas of the
-regular line of heredity, completely surrendered unto the Supreme Lord through
-performance of perfect devotional service. Mad with such material vanity, these people
-audaciously have a challenging attitude towards pure Vaisnavite injunctions and maxims
-with the help of their abecedarian pedantry.
- Whenever they are confronted with a question from a true Vaisnava, Kastvam? or
-Who are you?, What is your true constitutional position? - then such persons with
-their materialistic vanity and gross intelligence, considering their bodies as their selves,
-pretend to conquer the Vaisnavas by throwing out a materialistically - oriented pedantic
-reply based on their mundane knowledge and unfounded speculations. These sorts of
-pedantic deliberations sound simply delirious.
- In response to the question, Kastvam? - Who are you?, a real scholar should say,
-gopibhartuh padakamalayor dasadasanudasa or I am the servant of the servant of the
-servants at the lotus feet of the Lord Sri Krsna, Lord of the Gopis.</p>
-</div>
-
- <h2 id="story15">The Frog’s Half-rupee Coin</h2> 
-<p>A frog , living in a pond, by chance picked up a half-rupee coin. Upon getting the half
-rupee coin the frog became puffed-up and thought, , Is there anyone else as rich as I am
-now? If the king’s elephant comes this time to drink water here, I will chain him up. I
-won’t let him drink water here again! Meditating thus, the frog sat tightly on the halfrupee coin on the bank of the pond.
- Shortly after, the keeper of the king’s elephant arrived at the pond along with the
-elephant for taking a bath. The frog immediately jumped off and threw himself near the
-feet of the elephant, leaving the half-rupee coin behind. It wasn’t long before he lost his
-life under the elephant’s feet. 
-</p>
-<div class="purport">
-  <p>Those who are simply puffed-up with their great sphere of mundane activities in this
-material world, prove themselves to be insignificant like the ‘half-rupee coin of the frog’
-whenever they are confronted with a situation of real assessment.
- The great valour of an untiring worker in this material world may be crushed underfoot
-at any moment under the pressure of the mundane spell, as it is nothing but a gift from the
-material nature.
-
-Thus the Bhagavad - Gita says :
- <div class="verse">
-prakrteh kriyamanani gunaih karmani sarvasah
- ahankara-vimudhatma kartaham iti manyate
- </div>
-The spirit soul bewildered by the influence of false-ego thinks himself the doer of
-activities that are in actuality carried out by the three modes of material nature. (BG
-3.27)
-The activities performed under the influence of different modes of nature, are considered
-by the living entity to have been done by himself under the illusion of I am the Lord.
- Such a puffed-up person under illusion thinks himself to be the lord of enjoyment in
-this world and thus wants to lord it over the world. They fail to realize, however, that
-mother nature can at any moment crush down their tall edifice of boasting as a great
-worker. There is no use of independence and its related conceit in this material world.
-Today’s king may be tomorrow’s beggar on the street. Today’s pauper may become
-puffed-up with unlimited wealth and opulence. So the great saint sings :
- <div class="verse">
-rajar ye rajyapat yena natuur nat
- dekhite dekhite kichu noy
-
- hena maya kare yei, param isvara sei
- tanre mana sada kara bhaya
- </div>
-The king’s kingdom is like the dancer’s dance, in an instant it can be finished. In the
-same way, Maya, the supreme controller, acts. O mind, be always fearful of her!
- Thakur Sri Narottama</p>
-</div>
-
- <h2 id="story16">Prudence of a Woodcutter </h2> 
-<p>A woodcutter planned to go to the forest of Sundarban for collecting wood. Sundarban is
-full of wild animals, so an experienced person warned the woodcutter that it might be
-fatal if he enters the forest without being adequately armed.
- But the woodcutter retorted saying, I would like to disprove the unfounded notion of
-common people that one should enter a forest with arms. I won’t expose my foolishness
-to carry to carry coal to a Newcastle Coalfield. There are so many big trees in the
-forest. If I use a broken branch from one of those trees all the wild animals will run away
-here and there. If I see any animal approaching, I will break a branch from a tree and
-threaten the beast so much that it won’t dare come near me. It will run away when it sees
-me wielding the branch.
- The woodcutter thought himself to be very prudent, but he did not have the basic
-common sense that his speculation would be of no use in case a tiger jumped upon him
-suddenly and bit off his head while he was busy breaking a branch from a tree. He would
-neither be able to get hold of a branch, nor could he kill the tiger; instead, he himself will
-be killed.
- Actually, that was the case. After a few days of the woodcutter’s entering the jungle,
-information came that a small tiger had very easily jumped on him and enjoyed his blood
-and flesh without any problem.
- In fact, when he saw the tiger, the woodcutter began cutting a branch of a big tree to
-make his weapon to fight with the animal. But before he could finish, the tiger attacked
-him and he was killed almost immediately</p>
-<div class="purport">
-  <p>In a similar manner, yogis try to control their material senses through laborious methods
-of physical feats, but quite often six inherent and cardinal passions and vices of man like
-furiously untamed tigers may jump upon him and start sucking his blood. In this event it
-is quite possible that one may fall prey to agitation of the senses.
- A devotee’s consideration is not to think of his welfare after controlling the material
-senses, nor does he decide in favour of collecting several types of weapons for temporary
-self-defence. A devotee does not behave in such a make-believe fashion. He does not
-indulge in speculative and egotistic endeavour in controlling his cardinal passions
-through artificial methods of his own accord.
- A devotee of the Supreme Lord firmly believes that sense control will develop
-automatically along with his development of devotional service, and no other feats are to
-be practised separately for this. He is not very anxious to control his cardinal passions, on
-the contrary, those passions become conducive to his devotional service under the
-transcendental influence of devotion to the Supreme Personality of Godhead.
- In fact, his passions then become his constant friends and their motives are basically
-reoriented. His ‘lust’ is then engaged as transcendental Kamadeva in the service of
-Lord Krsna; his anger is directed towards atheists; his attachment and greed will be
-anxious in listening to the holy names; his illusion and infatuation will make him engaged
-earnestly in offering service to the Lord; and his vanity will help him to be totally
-engrossed in glorification of the Lord. Envy will not stay in a real devotee, because he is
-never perturbed with the excellence of anyone as he is merciful to everyone through his
-devotional service.
- So, it transpires that only through the practice of devotional service, can one very easily
-subdue all sorts of evil effects and convert even an enemy into a friendly companion to
-engage him in welfare services for one and all</p>
-</div>
-
- <h2 id="story17">A Boatman’s Dream</h2> 
-<p>Once a boatman was towing his boat along a thorny river bank, while the soles of his feet
-were becoming cut all over. The boatman was brooding how if he could make lots of
-money by towing the boat, he could spread a long foam cushion all along the river bank
-so that his feet would not be cut by the thorns, then his towing business would be more
-efficient as he would be able to walk more comfortably</p>
-<div class="purport">
-  <p>Many people speculate like this boatman.. They tend to ascribe anthropomorphic or
-zoomorphic proclivities on the Supreme Lord. What would be the need for the boatman
-to pull along the riverside when the boatman becomes rich and wealthy? It simply reflects
-one’s ignorance in tugging a boat along with a foam-covered river bank, just as it is in
-attributing material imperfection and deficiency to Vaikuntha, the transcendental abode of
-the Supreme Lord.
- The existence of para-brahma or the Absolute Supreme Being anywhere should
-eventually confirm the non-existence of all sorts of shortcomings, objections or material
-wants whatsoever. </p>
-</div>
-
- <h2 id="story18">Is There Any Pleasure and Sacrifice in Devotion? </h2> 
-<p>Some herons were sitting by the side of a boggy pond. A swan happened to pass by, then
-a heron asked the swan, Why are you face, eyes and toes red? Who are you?
- The swan replied, I am a swan.
- The heron asked, Where do you come from?
- The swan replied, From the lake ‘Manas Sarovar’.
- The heron then asked, What is it like there?
- The swan looked and said, It is a garden of golden lotuses, the water of that beautiful
-lake is nectarean, and all around it, there are various types of trees and plants, fruits and
-flowers, beautifully arranged on jewel bedecked platforms.
- The heron stared wide-eyed and asked, Are there any big-sized snails?
- The swan replied No!
- At this the herons laughed loudly and ridiculed the swan, Oh damn! When there are no
-snails there, how can you even consider it a lake? No one should go there. </p>
-<div class="purport">
-  <p>Often people in this material world with ulterior motives, are inclined to enquire about
-the objectives of pure devotion and the purpose of the institutions engaged in pure
-devotional practices.
-Whenever they come to know about any performance or any institution which makes
-arrangement for chanting and listening to the glorification of Lord Sri Krsna or the eternal
-welfare of all living entities through the preaching of the holy names of the Lord, they
-ask, Is there any practice of religion relating to service to mankind?
- To such people, the religion of service means material assistance to sick persons
-inflicted with plague, small-pox or cholera and to victims of floods, earthquakes, famines,
-and similar other natural calamities, through free distribution of food, clothing, shelter
-and the like.
- Whenever these people are told by the devotees that the institutions thus practising pure
-devotional services do not undertake any such activities relating to so-called philanthropic
-services, then they laugh loudly or ridicule, saying that any such institution which does
-not care for philanthropic services such as medical assistance to patients suffering from
-plague, cholera, smallpox etc., distributing of food to the hungry people, water to the
-thirsty people, clothing to the poor. education to the illiterate masses and the like, is
-simply an institution for practising idleness meant for lazy, worthless folk. No discreet
-person should approach it
- Such persons never accept any clarification that no temporary material assistance can be
-of permanent relief to those suffering folk unless and until an attempt is made to eradicate
-the root cause of eternal suffering of all the living entities.
- The living entity is the eternal servitor of Lord Sri Krsna. It is only due to the
-forgetfulness about Lord Sri Krsna that the living entities are subjected to various types of
-material distress. Upon constantly listening to the glorification of the Lord Sri Krsna,
-when the living entity is awakened to his original consciousness about his own
-constitutional position, then and then only, the root cause of all sufferings will be
-eradicated. No other separate temporary endeavour for relieving physical and mental
-distress need be practised.
- The best award to common people is to awaken in them self-realization by the mercy of
-the holy names of the Lord. Under the transcendental influence of such a practice, the root
-cause of all material distress of the suffering masses is eradicated with the least effort.
- This process is applicable to the rich and the poor irrespectively for the cause of their
-eternal welfare. Through this process, an unprecedented harmony between universal and
-no-communal altruism, service mentality and selfish attitude may very well be fostered
-among the people. In fact there is no dearth of universal love and brotherhood in the
-matter of love Lord Sri Krsna, inasmuch as a single fraction of a coin is truly in existence
-within the huge amount of money adding to crores or billions. Universal brotherhood,
-patriotism etc. are all present in full existence within love for Sri Krsna.
- As such, anyone who offers his love and devotion to the Lord, is truly offering his love
-to the entire mass of living entities. True devotees are not lazy nor are they selfishminded. They are actually devoted day and night in the service of Krsna conscious people
-through preaching the glorification of the Lord.
- Devotional service to the Lord is aimed at pleasing the Lord and this service does not
-permit any kind of personal enjoyment sacrifice. Anyone devoted to Lord Sri Krsna is
-fully imbued with all good qualities that we look for. </p>
-</div>
-
- <h2 id="story19">Naked Penco</h2> 
-<p>In a village their lived a boy named Pancanan. In tropical lands, small boys in their early
-age move around naked. Pancanan as a boy of five years used to go naked all the time. So
-the neighbours were fond of calling him naked Penco.
- However, Penco was a very good boy in his studies and general habits. Every year he
-used to get the topmost position in school and naturally he became very dear too most of
-his neighbours.
- But some of the neighbours were not on good terms with Penco’s father and they were
-not at all happy with the good behaviour of Penco. Every time they listened too any
-appreciation of Penco, they became very agitated and used to say, Oh, hang your naked
-Penco, don’t mention his studies!
- Within a few years, Pancanan attained a degree of law and took to the legal profession
-as a pleader in a court of law. When the inimical neighbours of Pancanan’s father came to
-hear this news, they remarked, Penco must have passed the examination by cheating.
- Pancanan Babu was gradually promoted to the position of a District judge within a
-couple of years, and became very renowned. Then the heart of those envious people
-burned with jealousy. They pulled faces and shouted, Oh, hang your cock-and-bull
-stories! How could that whippersnapper become a district judge?
- When the name of the District Judge Honourable Mr Pancanan was shown to them in
-some authentic papers, they cried vociferously, Naked Penco must be working as a judge
-without any remuneration! </p>
-<div class="purport">
-  <p>Any Vaisnava who has surrendered himself unto the lotus feet of the Supreme Lord or
-any person who has been duly initiated into the Maha mantra under a real spiritual
-master according to the Pancaratrika scriptures, should never be subjected to any sort of
-caste distinction. As depicted in the story just narrated, Pancanan Babu was wrongly
-considered to be a naked Penco even when he became a respectable court judge, and it
-was also an unfounded assumption that Pancanan could never become a court judge, only
-because his father was not in good terms with his neighbours. This is nothing but a
-reflection of one’s jealousy.
- One who is a Vaisnava, even born of a low caste, should never be looked down upon as
-a lowly person. As one single rupee is in existence within an amount of crores and rupees,
-similarly the qualities of a brahmana all exist within a Vaisnava. As such, it is considered
-to be an offence to blacklist any Vaisnava as a non-brahmana for any reason whatsoever.
- In fact an uttama-adhikari or a Vaisnava elevated to the highest stage of selfrealization, may very well be honoured as a paramahamsa or a truly wise sage. Those
-who consider themselves as servants only to such paramahamsa Vaisnavas, actually
-abide by the transcendental system of the eight divisions of varna and asrama as created
-by God. They never pose themselves as Vaisnavas under a sense of vanity. Instead. they
-consider themselves as servants of the Vaisnavas under the paramahamsa.
- Even if these persons came of a sudra, low caste or social brahmana family before they
-took shelter under the lotus feet of a Vaisnava, still it is unreasonable and offensive to
-introduce or call them sudras, low caste people or social brahmanas, recalling their
-positions in their previous asramas.
- One who has received the initiation mantra according to Pancartika scriptures and thus
-attained his second birth under the auspices of the fatherly spiritual master, and motherly
-Gayatri mantra, is called a transcendental (not social) brahmana.
- All these transcendental brahmanas (who have obtained their second birth in order to
-offer service to the Supreme Lord Sri Hari) accept sacred threads, chanting beads, tilaka,
-and the like, as per scriptural prescriptions.
- Those who maintain that Vaisnavas even if initiated into their new life, must be
-considered belonging to their own sudra or such low caste as they were by birth, and that
-such Vaisnavas should not accept any sacred thread, nor chant Gayatri or Pranava
-mantra - are similar to such people who prefer to brand the district judge Pancanan Babu
-merely as a naked Penco, or that naked Penco would not draw any salary even when he
-becomes an honourable court judge. This must be known as an envious mentality.
- Each and every girl moves naked in her very early age, but when the same girl attains
-her motherhood, then it will be most indecent and offensive to recall her childhood nudity
-and thus put her to shame.
- Similarly, it is more offensive and extremely hard-hearted to make an impression about
-any Vaisnava in the light of his previous asrama, before taking shelter of initiation in the
-Krsna-mantra.
-</p>
-</div>
-
- <h2 id="story20">A Wise Old Monkey</h2> 
-<p>A king used to maintain a group of monkeys for providing entertainment for his sons.
-The monkeys were very nicely fed with sumptuous delicacies everyday. The leader of the
-monkeys was well-versed in the scriptures of such wise personalities as Sukracrya,
-Brhaspati and Canayaka, and he used to teach the other monkeys these scriptures.
- There was also a pack of sheep in the king’s palace and the little princes used to ride
-them for fun. One of those sheep was very fond of eating anything from the palace
-kitchen. The cooks in the kitchen had to beat the sheep quite often to prevent it from
-causing mischief.
- The monkey leader thought that this kind of behaviour every now and then may result
-in something disastrous for the monkeys in the long run.
- The sheep are extremely gluttonous and the cooks, on the other hand, are very adept in
-beating the sheep with whatever they find at hand. In case the cooks any time start hitting
-the sheep hit a burning stick from the fire, then the furry body of the sheep would surely
-start burning. When such a burning sheep starts running around in frenzy and by chance
-enters into the nearby horse stable, then the hay inside will catch on fire and the entire
-stable along with it’s horses will be a blazing fire in no time. One ancient expert
-Salihotra, who is well versed in animal husbandry prescribes that burns on horse flesh can
-be healed by animal skin obtained from monkeys. Accordingly, the king will have the
-monkeys killed.
- Apprehending thus, the wise old monkey leader called along all the monkeys
-confidentially and told them, In a place like this where the sheep and the cooks are in
-constant confrontation, we, the monkeys, are sure to meet with our destruction. So, let us
-take refuge in a forest somewhere before we are destroyed en masse. But the arrogant
-young monkeys did not have any respect for the wise old monkey’s advice. They simply
-ridiculed the old monkey, saying, You must be under some sort of delusion due to your
-advancing age, and so you are talking like a lunatic. We are not interested in leaving the
-place for forest life only to live on distasteful fruits; here we are being fed with nectarean
-varieties of foodstuffs by the princes themselves.
- Upon hearing the puffed-up monkeys retorting like this, the old monkey told them with
-tearful eyes, O fools, you do not know the results of such pleasure. Don’t you know this
-will be ultimately destructive for you! So let me leave for the forest alone - I don’t want
-to see your deaths. Saying thus, the monkey-leader started for the forest, leaving behind
-all the other monkeys.
- Following this, one day that greedy sheep entered into the kitchen. The cook struck the
-beast with a burning firewood. Immediately the sheep started crying and ran straight into
-the nearby horse stable. As the sheep, with the fire all over it’s body, started rolling
-desperately over the hay-stack kept in the stable, the entire pavilion caught fire and many
-of the horses were burnt to death while the others just ran amock, resulting in a great
-consternation all over.
- The king immediately summoned his veterinary surgeon for the treatment of the horses.
-The surgeon quoted Salihotra’s prescription that monkey’s tallow was essential for the
-quick healing of the burns suffered by the horses. So the king ordered that treatment
-should immediately be undertaken to save the horses, and accordingly he also issued his
-instructions to kill the monkeys to collect their tallow’s. The monkey leader got the news
-and was very much depressed</p>
-<div class="purport">
-  <p>This moral story as narrated by Srila Bhaktisiddhanta Sarasvati Thakura, transpires that
-anyone who faithfully follows the instructions of his real spiritual master and engages
-himself in the devotional service to the Supreme Lord unflinchingly, will certainly attain
-ultimate welfare.
- Those who contemplate that the ageing advisor (spiritual master) might be under
-delusion and may not know more than a common person knows, and thus follow evil
-companions, will certainly meet with a disastrous end in everything. </p>
-</div>
-
- <h2 id="story21">Cracking Nuts with a Salagrama </h2> 
-<p>A landlord once appointed a professional priest for regular offerings to his family
-Salagrama. The landlord used to arrange for the daily offering of some chestnuts for the
-satisfaction of Sri Narayana.
- The priest accordingly used to take the chestnuts inside the Deity room and close the
-door as if he were going to offer them to the Deity. In fact the priest would use the
-Salagram as an ordinary stone, convenient for cracking the chestnuts. After cracking them
-with the Salagrama and keeping them on the sandalwood stone, he ate many of them even
-before offering.
- In course of time, his mischief came to light and the landlord then threw him out by the
-neck. </p>
-<div class="purport">
-  <p>Those who desire for some sense gratification with self-interest or for liberation without
-devotional service, or for women, wealth and prestige, usually take recourse to such
-habits as cracking the nuts with a Salagrama.
- One who plans to earn money and fame by performance of Gita and Bhagavatam
-lectures relating to religion, through publication and compilation of religious treatises,
-organising congregational sankirtana or offering esoteric mantras simply for his own
-sense gratification, may very well be indicated as one who makes an attempt to crack
-nuts with a Salagrama.
- In fact, all professional narrators of scriptural and mythological anecdotes, and
-businessman-like glorifiers of the Lord are trying to crack nuts with a Salagrama, which
-means that they are using everything offered to the Lord simply for their own sense
-gratification.
- There are persons who pretend to be living in association with devotees in a math, but
-are simply looking for facilities for their own self-interest and actually make personal use
-of the society of devotees instead of offering services to such society, and enjoy Lord Sri
-Krsna’s property without the slightest interest in offering services for the satisfaction of
-the Lord.
- These so-called devotees are similar to the professional priests who try to crack nuts
-with a Salagrama, and they practise devotional services that are not considered sincere or
-honest. It is thus said that any prayer to the Lord for religion, wealth peace or liberation is
-tantamount to cracking a nut with a Salagrama</p>
-</div>
-
- <h2 id="story22">Dr. Frog’s Thesis </h2> 
-<p>Not far from the ocean there lived a frog in a well. The frog was, in fact, born and brought
-up within the said well and never went outside it. Nevertheless it was still a puffed up
-creature.
- The frog used to think that it was the sole proprietor of the well - it even surmised that
-the well was tantamount to the world and as such, the frog considered itself the lord of the
-whole world!
- One day another big frog from the seaside came across the well and by chance it fell
-inside. The resident frog took the seaside frog to be new prey and as such it jumped upon
-it, but realized soon that it was another frog that was just a little different.
- So the resident frog asked the newcomer, Where do you come from?
- The seaside frog answered, From the seaside.
- Hearing this the well-resident enquired, How small is the sea compared to my well?
- The seaside frog laughed, The sea is beyond any comparison with this well.
- The well-frog was surprised. Is it this large? Saying thus he gave a long leap.
- Seaside frog : How long a jump can you attempt?! The sea is far bigger than your
-well.
- Then the well-frog jumped from one end to the other end of the well and shouted,
-Impossible! Nothing larger than this can exist.
- At this the seaside frog said, Please make an effort to look above this well and see how
-large the ocean actually is!
- The well-frog scoffed, You appear to be extremely fanatical. I am sure that the ocean
-may very well be as large as this well. I am not so narrow-minded that I am going to
-declare my well the biggest place of all. Your ocean must be as big as my well, because
-water is there in both the places. This is my strong conviction. You must be simply
-boasting about your ocean like a fanatic for your own satisfaction.</p>
-<div class="purport">
-  <p>In the material world as well, there are so many pedantic compromising pandits who
-insist their own viewpoints are the best ones but ultimately fail to support their own
-hypotheses. They finally try to equate devotional service with other types of services.
-They behave just like highly learned Dr. Frogs, but in fact their perception about
-devotional services is far from satisfactory. </p>
-</div>
-
- <h2 id="story23">Boxing with the Sky </h2> 
-<p>A highly conceited person used to consider everything on this earth to be very
-insignificant to his own estimate. Once he came to the conclusion that the sky itself is
-most proud and apparently the strongest of all. Natural calamities like storm, shower,
-thunderbolt etc. come directly from the sky. The clouds roar from the sky and this reflects
-that the sky is very much boastful of it’s own position, and as such, the sky must be given
-a good lesson. Accordingly this proud person speculated that he should tear the sky apart
-by his own strong fists.
- With this determination in mind, one day he started vainly punching towards the sky in
-order to control it. In fact, the sky remained as unperturbed and as graceful as before. On
-the other hand, the puffed up person became gradually tired of throwing ineffective
-blows at the great sky. Ultimately, he became so exhausted that he fell to the ground and
-hurt himself. </p>
-<div class="purport">
-  <p>The spiritual master and the Vaisnavas remain unpeturbed and graceful while they are
-engrossed in devotional service to the Supreme Lord Sri Hari, while the mundane fools
-consider such real devotees responsible for all sorts of calamities and derangements in the
-world for the boastful attitude.
- Because of this false apprehension about the Vaisnavas, many such people exhibit their
-unfounded misdemeanours towards honest devotees most unreasonable, but their false
-attempt of punching goes all in vain. The Vaisnavas, as the ever - benevolent great sky,
-remain calm and quiet, while the atheists themselves undergo continued material agonies. </p>
-</div>
-
- <h2 id="story24">The Half-young / Half - old Fallacy </h2> 
-<p>Under extreme poverty, a non - Hindu person once took his hen to market for sale. He
-surmised that it could fetch a very high price if hr declared it to be an ancestral one,
-because he speculated that usually an old variety of rice, tamarind and ghee is more
-expensive in the market.
- As such, he was proudly declaring to all potential customers in the market that his hen
-was of a very old variety of poultry and continued to do so for about a year, unfortunately
-not a single buyer was interested in buying such a decrepit and diseased hen at any price.
- By chance, an elderly wise man suggested to him that the buyers were reluctant to buy
-the hen because it had been declared to be an old one, and that they would be naturally
-interested if it was presented as a young virgin.
- Upon this good advice, the hen - owner conjectured that he had already presented the
-hen as very old for several months. So he decided to present the hen in the market as halfold and half-young to attract customers. However, when he did that he was ridiculed by
-everyone in the market and of cause no one came forward to purchase it. </p>
-<div class="purport">
-  <p>Those who are impersonalists speculate similarly advocating that Brahman is both
-formless and as well as with a form. In fact, the realization of completeness of Brahman
-is greatly affected unless its eternal and transcendental potency is accepted.
- Sri Caitanya Mahaprabhu thus says -
-  <div class="verse">
- brhad-vastu ‘brahma’ kahi-’sri-bhagavan’
- sad-vidhaisvarya-purna, para-tattva-dhama
-
- tanre ‘narvisesa’ kahi, cic-chakti na mani
- ardha-svarupa na manile purnata haya hani
- </div>
-Brahman, who is greater than the greatest is the Supreme personality of Godhead. He is
-full of six opulences, and therefore He is the reservoir of ultimate truth and absolute
-knowledge.
- When we speak of the Supreme as impersonal, we deny His spiritual potencies.
-Logically, if you accept half of the truth, you cannot understand the whole.
-(Cc,Adi. 7/138,140)
-Those who glorify Sri Gaurasundara, but not Lord Sri Nityananda ,or glorify Lord Sri
-Nityananda without glorifying Lord Sri Gaurasundara or offer obeisances to Lord Sri
-Krsna, but not to Lord Sri Gaurasundara; or pay respect to Lord Sri Gaura but not to his
-spiritual master ,or accept Supreme Godhead, neglecting His devotees or honour His
-devotees without honouring the Supreme Lord simply speculate on the basis of the fallacy
-of the half-old and half-young hen</p>
-</div>
-
- <h2 id="story25">Mercy for the Earnest Only</h2> 
-<p>By chance a person slipped and fell into a deep well and could not get out in spite of all
-his efforts; therefore he began shouting for help.
- Being merciful, a very kind - hearted passer-by brought a piece of long rope which was
-lowered down in the well so that the man could get out by grabbing the rope. The passerby asked the man to catch hold of the rope and try to climb up so that he could pull him
-up.
- In response the person started shouting, O my friend, please help me so that I can put
-my fingers around the rope. </p>
-<div class="purport">
-  <p>Such a kind-hearted person is like the spiritual master or the Supreme Godhead Himself.
-He has already lowered a rope of rescue into the deep darkness into our ignorance. It is
-only by our earnest effort in catching hold of that mercy that we can be delivered and
-liberated from material agonies.
- Unless we extend out best efforts earnestly, and qualify ourselves for the Lord’s mercy,
-it is next to impossible that we can be rescued from our fallen condition. </p>
-</div>
-
- <h2 id="story26">Popcorn Bondage </h2> 
-<p>Being extremely tiered of hunger, a pauper was learning against a wide pillar in a
-travellers’ rest house. At that time a wealthy merchant was passing by after taking his
-daily bath in the holy Ganges. Upon seeing the hungry person, he felt compassionate and
-purchased some popcorn from a nearby shop to give to him.
- The hungry person was naturally anxious to accept the food and so he promptly
-stretched out both his hand but without undoing his embrace around the pillar, either out
-of utter fatigue or lack of intelligence.
- Realising that the hungry person wouldn’t be able to make use of the food while
-embracing the pillar the compassionate gentlemen advised him to remove his arms from
-the pillar before accepting the popcorns. Unfortunately, the foolish person insisted upon
-accepting the popcorn while still embracing the wide pillar.
- Most reluctantly the kind - hearted merchant poured the popcorn into the hands of the
-hungry person and went away. The wretched person then started making all sorts of
-attempts to eat the popcorn but his mouth could never reach his hands around the wide
-pillar. He remained as hungry and dejected as before. </p>
-<div class="purport">
-  <p>All atheists suffer like this. Conditioned souls prefer to embrace the pillar of the material
-world and the foolish want to take rest, while refusing to accept anything worthwhile.
-They should rather accept and abide by the valued instructions of the pure devotees so
-that they can train themselves how to give up the allurement of taking useless rest upon
-the pillar of this mundane world. </p>
-</div>
-
- <h2 id="story27">A Fallacy of Custom </h2> 
-<p>Every morning some brahmanas would take their bath in the Ganges and offer their daily
-prescribed prayers to the Lord. All of them were taking their own copper vessels for
-offering water to the Lord. But through oversight, all the copper vessels invariably
-changed hands everyday.
- Finally an elderly brahmana, in order to differentiate his own copper vessel from
-others, put a lump of sand on his own copper vessel and went to take a bath. Observing
-this practice, all the other brahmanas assumed that this must be a holy custom and
-imitated the said elderly brahmana by putting the a lump of sand on their vessels.
- After taking bath, the elderly brahmana came out of the river and found that it was
-impossible to identify his own copper vessel, because each and every vessel had a lump
-sand on it. At this, the elderly brahmana said to himself, How over-attached to rituals
-these fellows are! Without realising the real purpose of anything, they just imitate others.
-If they had applied their common sense, they would not have marked their copper vessels
-in the same way. </p>
-<div class="purport">
-  <p>In modern society, practice of religious performances is quite often like this. There are so
-many customary practices in the field of literature and social conduct in respect of usages
-and performances that most of the people follow them blindly without making assessment
-of their validity and authority.
- Lord Nityananda is the supreme controller of all wealth and He has no want
-whatsoever. Those who suffer from want, are known as daridra or paupers. Poverty is
-one of the three types of sufferings undergone by living entities. The Supreme Personality
-of Godhead is never influenced by any of the three modes nor by any sort of poverty or
-want. But common people, without considering this, quite often regard a pauper to be
-Lord Narayana in a customary fallacy, and the modern usage of the word daridranarayana has been coined.
- Some people may argue that Lord Narayana may not be a pauper, but still He exists in
-every living being and the said popular word has been coined in order to remember Him.
-This argument is also based on fallacy. The fact is that Lord Narayana is not at all
-poverty-stricken persons; and that no living entity is Lord Narayana Himself in any
-circumstances.</p>
-</div>
-
- <h2 id="story28">The Fallacy of Blindly Following</h2> 
-<p>Once when Lord Sri Caitanyadeva was staying in Vrndavana, some people spread a
-rumour like wildfire that Lord Sri Krsna had appeared in the lake of Kaliya in Vrndavana.
-Many people rushed to Lord Sri Caitanya reporting that at night they had undoubtedly
-seen in the lake of Kaliya the snake, and that Lord Sri Krsna was dancing on it. For three
-consecutive days streams of people came to Lord Caitanyadeva with eyewitness reports of
-the event.
- Upon hearing such reports, Balabhadra Bhattacarya, one of the simple-minded servitors
-of Lord Sri Caitanyadeva, developed a very strong urge to go to the lake of Kaliya for
-having darsana of Lord Sri Krsna. Then Lord Sri Caitanyadeva gave Balabhadra a hard
-slap, saying, Why do you get allured with the reports of such blind followers? Never
-accept anything unfounded under the illusory description given by blind followers.
- Next morning, a sensible person visited Lord Sri Caitanyadeva and by asking him He
-then came to know the real fact of the matter which was that the local fishermen used to
-catch fish in the night, with lamps on their boats, in the lake of Kaliya. Foolish people
-must have mistaken from a distance the boat as the great serpent Kaliya, the lamp as the
-shining jewel on it’s head, and the fisherman as Lord Krsna in the darkness of night. This
-sort of delusive vision was wrongly believed by them to be a true phenomenon</p>
-<div class="purport">
-  <p>In the field of religion many things are propagated as true religion, through such a fallacy
-of blind following. There is, in fact, no limit to such widespread misleading practices
-propagating fictitious incarnations, prophets and so-called -isms, ruining the morale of
-the masses. Real lovers of truth must be aware of this evil.</p>
-</div>
-
- <h2 id="story29">The Blind Men and the Elephant </h2> 
-<p>A group of blind men heard a strange animal called an elephant from some elderly
-people. Naturally they had a very strong urge to have first-hand experience of such an
-animal through their sense of touch. With walking sticks in hand, the blind persons
-arrived at the elephant stable in the royal palace, and requested the elephant keepers to
-permit them to touch the elephant’s different limbs. Some of them rode on the elephant’s
-back with the assistance of the elephant keeper, some of them were touching the trunk of
-the elephant, some were touching the tail, and some were feeling the legs of the elephant.
- The blind person who touched the trunk of the elephant, decided that the elephant must
-be an animal with the form of a large serpent. The one who touched the legs assumed that
-it was just like a pillar. Another who touched it’s ears thought that it must be something
-like winnowing platter, and the one who touched it’s belly came to his own conclusion
-that the elephant must be an animal like a big drum. Thus, the understanding of the
-elephant was not perfect to any of the blind persons.</p>
-<div class="purport">
-  <p>Those who arrive at their own conclusion about the constitutional form of the Supreme
-Personality of Godhead by applying their materialistic knowledge, so-called mundane
-education or objective observation also suffer from such imperfect and concocted
-conception of the truth.
- It is because of this kind of endeavour for realisation of the Supreme Godhead through
-one’s direct observation and speculation that various atheistic philosophies like
-illusionism, skepticism etc. have become established. But when one is enlightened,
-which means, initiated into transcendental knowledge from a real devotee of the Supreme
-Lord, and is fortunate enough to enjoy a vision of the Lord, then, and then only, the
-perfect constitutional form and position of the Lord can be properly realized.
- Those who are not devotees of the Lord and are under illusion from material
-knowledge, deliver only such ideas about the Supreme Lord that are simply imperfect,
-concocted and speculated -isms only. Any conception of formlessness of the Lord, or of
-his transcendental form, is to be considered imperfect and unfounded, unless and until it
-is supported by a true vision and realization of his real position of a true devotee</p>
-</div>
-
- <h2 id="story30">The Blind Man Holding the Cow’s Tail Fallacy </h2> 
-<p>Once upon a time a blind person was going to his father-in-law’s house, tracking the way
-with the help of his walking stick. Very soon while passing through a field he came
-across a cowherd boy and asked, O brother, would you please do me a favour by leading
-me to my father-in-law’s house?
-At this the cowherd replied, I am busy in tending so many cows. If I take you to your
-father-in-law’s house, all the cows will run away. Of course, I can do one thing for you - I
-can lend you a very docile and faithful cow of mine - you can safely catch hold of her tail
-and she can smoothly lead you to your in-laws house.
- Thus advised by the cowherd, the blind traveller firmly caught hold of the cow’s tail and
-the cow began walking while trailing him behind. However, the cow got quite scared of
-the strong pulling of it’s tail by a blind person, and hence she behaved so frantically that
-the blind person was virtually being pulled roughly along the road and through thorny
-bushes while suffering frequent hard kicks of the cow’s hind legs. As a result the blind
-man’s body was severely injured and his garments were all torn apart.
- Anyway, he arrived in the dead of night to his in-laws house, in a very wretched
-condition with cuts and bruises and totally naked. The servants of his in-laws house took
-him to be a cattle thief and punched and slapped him in order to get him to release the
-cow’s tail from his hold. Thus the blind man suffered unlimitedly</p>
-<div class="purport">
-  <p>Those who have ulterior motives take shelter of so-called guru’s instead of a truly bonafide spiritual master and ultimately suffer very badly like the blind man in his situation.
- Any and every person cannot lead one to the Supreme abode of Godhead and no
-unauthorised to our true welfare. It is, therefore, obligatory that one should take shelter of
-a bona-fide Krsna conscious spiritual master without any hesitation. </p>
-</div>
-
- <h2 id="story31">The Right Whip for the Right Dog </h2> 
-<p>Samba, the son of Sri Krsna, was born with his wife Jambavathi. Once Samba abducted
-Laksmana, the daughter of Duryodhana, from the assembly of her probable suitors
-(svayamvara-sabha). Then four of the Kaurava heroes captured Samba, chained him up
-and took him along with Laksmana to Hastinapura.
- In retaliation, the Yadavas prepared themselves for a battle against the Kaurava. In
-order to pacify both parties, Baladeva went to Hastinapura along with a team of
-brahmanas and elderly persons, after pacifying the Yadavas. Baladeva conveyed the order
-of King Ugrasena to the Kauravas by saying that the Kauravas being fortified with a large
-number of soldiers had overpowered and thus captured Samba and that he should
-forthwith be handed over to Baladeva.
- Upon hearing this order, the Kauravas became greatly agitated and started arrogantly
-making insinuations against the Yadavas; and they even indulged in hurling many rude
-comments against Sri Krsna and Baladeva as well. As a result Baladeva decided to
-submerge the entire city of Hastinapura into the Ganges by using His powerful plough,
-and the Kauravas then became so afraid that they took shelter of Lord Baladeva, after
-bringing Samba and Laksmana in front of Him.</p>
-<div class="purport">
-  <p>In this respect Sri Sukadeva Goswami said,
-     <div class="verse">
- nunam nana-mdonnaddhah
- santim necchanti asadhavah 
-
- tesam hi prasamo dandah
- pasunam lagudo yatha 
- 
- </div>
-Clearly as many as passions of these scoundrels have made them so proud that they do
-not want peace. Then let them be pacified by physical punishment, as animals are with a
-stick.
-(Srimad Bhagavatam 10.68.31)
-Evil-minded persons who are mad with wealth, followers and the like, obviously are
-unwilling to make peace. As brute animals are subdued only with the use of the right
-whip or stick, so these animal-like beings deserve no other treatment than beating with a
-club. Such rogues are not qualified to pay any heed to good advice whatsoever. So
-beating with a whip is the only true lesson for them.
-NOTE :
-Quite often Srila Bhaktisiddhanta Sarasvati Goswami Prabhupada used to quote the
-above-noted verse, strongly advocating appropriate punishment instead of good advice to
-such critics of Lord Sri Hari, the spiritual masters, and the Vaisnavas, as those people are
-deemed to be demoniac atheists only.
- People who have no respect for any good advice in this world, usually turn a deaf ear to
-any preaching. It is also offensive to offer such good advice and preaching to them. They
-should simply be treated on the principle of the right whip for the right dog.
- A Vaisnavas tolerate alot of vindication on his person and also overcomes hundreds of
-insinuations as such. But he is unable to stand any criticism against his spiritual master
-and the Vaisnava community. It is considered to be a true Vaisnava attitude that one
-becomes agitated at any criticism hurled against the spiritual master and the Vaisnava
-community in general.
- The impersonalists consider the spiritual masters and the Vaisnavas on the same level
-as common people only, and as such, they advise one to be falsely tolerant and as
-submissive as grass whenever confronted with a critical estimate of the spiritual master
-and the Vaisnavas.</p>
-</div>
-
- <h2 id="story32">The Ancestral Well </h2> 
-<p>A village pandita was very much devoted to his departed father. The pandita used to say,
-The father is the God incarnate, we are enjoying all earthly pleasures simply by his
-mercy only. So I do not accept any other creator or Godhead except my father.
-<div class="verse">
- pita svarga pita dharma
- pita hi paraman tapa
-
- pitari pritimapanne
- priyante sarva devata
- </div>
-This was the favourite verse that the pandita used to chant all the time. To chant the name
-of his father, to meditate on the image of his father, and to give offerings to his ancestral
-forefathers were his daily rituals.
- The great-grandfather of this pandita had built a draw-well for his family’s use. In the
-past, the water drawn from this well happened to be widely known as the sweetest and
-clearest of all the wells in the village. However, in due course of time, after three or four
-generations of the family covering one hundred and fifty years or so, the stagnant water of
-the well became extremely putrid. It was no longer suitable for drinking or general use as
-a huge mass of filth, mud and all types of plants had decomposed in it. One or two dead
-frogs also added to the decomposition of the well. As such it became smelly and
-completely infested with deadly bacteria.
- The pandita, being devoted to his father used to drink water from the draw-well dug by
-his great-grandfather. Actually his father had never taken water from any other tank or
-river in the village so the pandita would never allow his family members to drink any
-other water except from the ancestral draw-well.
- The pandita, so loyal to his father, had a number of sons and grandsons, all of whom
-died from various diseases. Eventually, even his wife died of a contagious disease. The
-pandita himself also suffered from many ailments. There were quite a number of
-tubewells in the village and the river Ganges was flowing only a few miles away from
-there. Everyone was repeatedly advising the pandita to stop using the water from that
-contaminated well and to drink water from other tubewells or the Ganges.
- By this time the pandita, due to his fanatical attachment to his ancestral father and
-forefathers, and had totally destroyed all his family members as a result of his obstinacy
-and die hard attitude. At last the local authorities came to destroy the well to ensure
-good health in the village. When the pandita saw them approaching, he squatted on the
-well in such an obstinate mood to his ancestral forefathers, that it appeared to the
-authorities that not even royal power could destroy it</p>
-<div class="purport">
-  <p>Persons who are adamant in getting initiated from a particular ancestral gosvami, also
-demonstrate such an obstinate attitude. Anyone claiming himself to be one’s ancestral
-spiritual master may not be truly qualified through continued derogation of dignity and
-position.
-NOTE :
-Srila Bhaktisiddhanta Saraswati Goswami Prabhupada used to say, A doctor’s son may
-not necessarily be a true doctor. Those who are careless about their own welfare,
-extremely lazy and guided by the pleasure principle, never take the pain to search out
-their true bona-fide spiritual master</p>
-</div>
-
- <h2 id="story33">B-B, M-A</h2> 
-<p>Two very lazy men lived jointly in a room. By chance, on one winters night the room
-somehow caught fire. As the fire was spreading, one of the lazy persons felt the heat on
-his back but didn’t care to get up. When the heat of the fire grew unbearable, the first lazy
-man didn’t even take the trouble to alert his room-mate. He just uttered two letters only,
-B-B , by which he meant to say, back burning!
- The second lazy man was also similarly reluctant to respond with a fully expressed
-sentence and he only murmured, M-A , out of sheer laziness, meaning to advise his
-friend to move aside.
- All this time the fire was getting bigger and bigger while the lazy men in their dreamful
-slumber thought that the night was over and that the sun was up, and that they were
-feeling the warmth of sunshine. With this dreaming conjecture, the first lazy man asked
-the second one without getting out from his bed, O brother, could you please check how
-hot the sun is?
- The second lazy man thought, Who wants to take so much trouble?
- So he replied, How can I open my eyes?
- As they were lazily passing the time in this way, both of them were roasted in the
-blazing fire</p>
-<div class="purport">
-  <p>Those who pretend to be residents of the asrama for the sake of practising service to Lord
-Sri Hari, but who became lazy in offering daily service to the Lord, the spiritual master,
-and the Vaisnavas, are also susceptible to be caught within the clutches of illusion and
-ultimately to meet with a similar end.
- The lifestyle of one who has devoted himself to the service of the Lord should never be
-at any time lazy. </p>
-</div>
-
- <h2 id="story34">I’m Not Stealing Bananas!</h2> 
-<p>Once a landlord had built a temple. He had no lack of wealth , so in order to attract
-more honour and prestige from the visitors of the temple he made elaborate arrangements
-to dress the deity and also ordered the offering of nice foodstuffs to the deity so that the
-prasadam could be distributed among his relatives for their appreciation.
-The landlord appointed a priest who used to think thus : The Deity has a lot of
-ornaments and so many dresses; I wonder if I could enjoy one of them . But there are
-sentries on guard everywhere so not a single object can be taken away ! I can’t even
-enjoy any of the best preparations from the offerings
-because the entire amount of prasadam goes to the Lord’s relatives. I guess that I must
-remain satisfied with five rupees a month.
- One day the landlord brought some best quality amrtasagar and agnisvar bananas, and
-handing them over to the priest, he asked him, O pujari! please offer these bananas to
-the Deity and then send the whole lot to my private apartment. Some of my friends are
-coming today and these bananas should be reserved for them only.
- Before the offering at midday, the landlord himself was anxious to check whether the
-bananas were really being offered to the Deity, but when he approached the altar he found
-that the door was bolted from the inside. In fact, the priest was pretending to offer the
-bananas to the Deity and while eating some of them, was thinking, When could I have
-the chance to eat such a delicious variety of bananas in my life? Getting them now at my
-disposal, why should I miss this opportunity of enjoying them? I doubt that the landlord
-counted all the bananas, so I am sure he won’t detect the loss of a few bananas if I take
-them.
- While eating the bananas and thinking thus, the priest heard the landlord shouting from
-outside the temple, Who is in the Deity room? A thief’s mind remains ever anxious, so
-the priest, being extremely frightened replied while still chewing the bananas, I didn’t
-steal the bananas! Listening to the choked voice of the priest and his awkward reply, the
-landlord was sure that the priest was consuming the bananas</p>
-<div class="purport">
-  <p>Those who pretend to offer devotional service to the Lord while in their heart developing
-an urge for other motives, usually expose themselves without fail in front of real saintly
-persons and Vaisnavas. Whenever a person starts unexpectedly praising his own activities
-or makes an attempt to confirm his apparently good conduct just through criticising
-others, it may be very rightly assumed that the person concerned has other motives in
-mind. Even if the entire population of critics criticized a real saintly person or if selfishlymotivated persons start blaspheming him, he never makes an attempt to vindicate
-himself.
- A truly devoted Vaisnava never make any protest against himself, but he never tolerates
-any criticism against other Vaisnavas or his spiritual master. It is believed that anyone
-who makes any attempt to vindicate himself must be factually a guilty persons and
-otherwise motivated for name and fame in the general society.</p>
-</div>
-
- <h2 id="story35">Bhagavan Becomes a Ghost Under Intrigue </h2> 
-<p>In a certain town lived a learned person named Bhagavan who became very friendly of
-that country by dint of his scholarship . At this, the kings ministers became very envious
-and they hatched a plot so that the pandita would be driven out of the country. The
-ministers told the gatekeeper, The king has ordered that the pandita should not be
-permitted to enter the royal palace again. The gatekeeper carried the instruction as
-advised. However the king was anxious as he did not see the pandita. When he asked the
-ministers about the whereabouts of the panditas, they said, Bhagavan has expired.
-According to the ministers’ plot, the royal physician had also reported that Bhagavan had
-died. The king was very depressed of the news of the panditas death.
- After a few days the king came out of the palace for a stroll and the Bhagavan pandita
-wanted to take a chance to meet him. Of course the ministers and aides were all around
-the king and very cleverly they made such a tight human barricade that Bhagavan pandita
-was simply unable to penetrate them and meet the king. Being desperate, the pandita
-climbed a tree and started shouting to the king, O king! Here I am, your Bhagavan
-pandita! As soon as the king glanced at him all the aides and ministers, O king!
-Bhagavan pandita has now become a ghost after his death and look! He is now calling
-you from that tree-top. Let us be quick to move aside.
- Considering that so many people were saying the same thing and confirming it to be
-true, the king ignored the call of Bhagavan pandita and went away in a different direction,
-while the pandita lamented saying, Oh, how powerful is the intrigue of these people!
-Under there intrigue even Bhagavan pandita has become a ghost! </p>
-<div class="purport">
-  <p>This is now exactly the situation in the material world under the intrigue of atheistic
-public opinion, particularly in the domain of religion and spiritual living. The so-called
-public opinion is now demoniacally preventing saintly people from listening to any sort
-of devotional subject. The majority of common public are strongly of the opinion that
-devotional practice is just like other material or academic practices. They advocate that
-there are as many ways of liberation as there are philosophies. They are unable to realize
-that devotional service is the ultimate philosophy of living. </p>
-</div>
-
- <h2 id="story36">Crossing the River When it is Dry</h2> 
-<p>A person was extremely introverted and he didn’t want to leave his own house.. One day
-his friend asked him, O Kaminimohan! Let us both go and visit a sadhu. A great
-personality has come to Sridham Mayapur and he is preaching very nice transcendental
-subject matters. You life will be fulfilled upon hearing his instructions. Kaminimoham
-was very reluctant to leave the comfort of his home just to visit a sadhu’s place. Then his
-friend tried to allure Kaminimohan, saying, By the way, there’s a great funfare at the
-bank of Kuliya. It is full of recreation and amusements. So let us go and visit the fare.
-So Kaminimohan agreed to go visit the funfare at Kuliya for some enjoyment. The friends
-plan was to take Kaminimohan to the bank of Kuliya and then it would be possible for
-him to take him across the Ganges to arrive at Sridhama Mayapura.
- Arriving at the bank of Kuliya, Kaminimohan enjoyed at the funfair for a while. Then
-his friend told him, Just across the river is Sri Mayapur. Let us go an visit the holy
-dhama. There you will find the birth place of Lord Sri Caitanyadeva, tomb of Chand
-Kazi, the remnants of Ballal Sen’s ancient royal palace, the great lake of Ballal Sen and
-many other places of interest.
- Kaminimohan realised now that his friend had become almost determined to take him
-across the river for a visit to the holy dhama. So he made out a counter-plan and said,
-My dear friend, I am very afraid of crossing a river. I am, in fact, not at used to boarding
-a boat, it gives me nausea, dizziness, I become extremely afraid of drowning and
-palpitations start immediately. This is rainy season, but in winter, when the river will
-become dry, then we can easily walk down the river without the help of any boat. At that
-time I will definitely visit Sri Mayapur and all its interesting places.
- Listening to Kaminimohan plea, his friend told him, O my dear friend, you say you’ll
-cross the river when it is dry. This is nothing but your insincerity and hypocrisy. The river
-will never be dry, and you wouldn’t be able to cross it</p>
-<div class="purport">
-  <p>My of us think that we may devote enough time for listening to the transcendental
-preaching from some saintly person after completing our business in the field of our
-domestic material entanglements concerning our family members, their desires and wants,
-diseases and other things. But in fact, these entanglements will never go. Devotional
-practices will never be undertaken, unless we make it a point to start devotional practices
-immediately. </p>
-</div>
-
- <h2 id="story37">The Desire to Swim Out of the Water </h2> 
-<p>The mother of a boy would never permit her son to take a bath in the river. She was very
-anxious in case her son drowned in the river while taking a bath. One day an elderly
-neighbour came and advised the mother of that boy that her son would never learn
-swimming unless he was encouraged to have a regular bath in the river. Without
-practising how to swim the bay may be in danger while crossing a river by boat. It was
-therefore most essential that he should learn swimming.
- Listening to such advice the boy told his mother, I want to learn swimming so that I
-can save myself from drowning, but could you please find a method of learning to swim
-without getting into water?. The boys mother appreciated the boys intelligence and
-promptly recommended an idea. </p>
-<div class="purport">
-  <p>Hearing the instructions and injunctions that one is supposed to suffer a lot or goo to hell
-in the next life unless one practises worshipping Lord Sri Hari, materialists become
-anxious to ensure their freedom from such sufferings. But they are not at all prepared to
-render devotional service to the lord and follow the regulative principles after getting
-initiated in Krsna Consciousness under the lotus feet of a spiritual master. They indulge
-in shyness, apprehension, indecision, diffidence etc. , in this respect.
- As a result their interest in rendering devotional service to the Lord never materializes.
-just like a desire to learn swimming out of water. To swim, one must have the requisite,
-determination and similarly, one has to take shelter of a bona-fide spiritual master in
-order to be qualified in devotional, and to overcome all the impediments.</p>
-</div>
-
- <h2 id="story38">Cheating a Blacksmith with Inferior Steel </h2> 
-<p>A tradesmen wanted to present himself as very intelligent. He appeared to be adept in
-making a fool of others by dint of his cunningness. Once he managed to get some
-coconuts through his usual slyness. Then he wanted a sharp chopper to break then open.
-Eventually he found a very old and rusty chopper in the corner of his room. Taking it to a
-blacksmith, he asked him to reshape it and make it first class again. The blacksmith told
-him that he could forge a very good chopper, if good quality steel was given to him. Then
-the clever tradesmen played a double game telling the blacksmith, I am a steel merchant
-and I have got some good quality in my stock. I would like to give you an extra amount of
-the excellent steel - could you forge a copper for me with that steel free of cost? Of cause
-you may keep the extra steel, whatever was left after forging the chopper, for your own
-labour charge. I can assure you that nowhere in India can you find such excellent steel
-that I will send you. It is very costly you know.
- After delivering such artful language, the tradesmen in fact sent a condemned third-rate
-sheet of iron through his son to the blacksmith. Just glancing at the piece of iron the
-blacksmith realise that it was not steel, but only a piece of useless iron. A it was
-ineffective and practically useless, the tradesmen came back to the blacksmith threatening
-and shouting at him while the blacksmith retorted saying, Cheating a blacksmith with
-inferior steel can only bring out such a chopper. </p>
-<div class="purport">
-  <p>Those who make any attempt to deceive their spiritual master and the Vaisnavas in
-rendering devotional service will certainly come to an end with something spurious. Any
-attempt of deception in the field of devotional service is simple self-deception. It pulls
-one down into the clutches of illusionary energy, without any benefit. Some people with
-ulterior motives think that others who have surrendered everything to the Lord are only
-deceived; and those who are continuing to play the double roles of both devotional
-service as well as self gratification actually gain more.
- In fact, such a double gain is surely tantamount to deceiving a blacksmith by supplying
-him with an inferior quality of iron while asking him to prepare a good quality steel
-chopper. No one can ever deceive the Supreme Personality of Godhead. It is never
-possible to conquer the domain of the Lord by any sort of deception and quackery. Only
-one who has candidly surrendered everything unto the lotus feet of the Lord is eligible for
-achieving all good.</p>
-</div>
-
- <h2 id="story39">The Blacksmith and The Potter
-</h2> 
-<p>In the village Bilaspur , there lived a blacksmith named Vamacacaran. once he went to
-visit his friend who happened to be a potter in the village Haripur. Hoping to earn some
-appreciation from his friend Vamacaran offered to assist to him in his work. The potter
-was very delicately using his hammer to give shape to some pitches and pots, while
-Valacaran, imitating him started hammering the other pitches and pots so violently that
-all of them were completely smashed. </p>
-<div class="purport">
-  <p>The manner in which the blacksmith hammers iron to give shapes to it is not meant for a
-potter to model clay. The method and technique of both of then are entirely different. A
-materialistic worker usually develops a conception that the devotional service offered by
-a devotee for the satisfaction of the Lord is apparently and externally akin to sense -
-gratification material activities and as such they all belong to the same category.
- In fact, there is a real difference between the process and the manner in both such
-activities. So - called dispassionate material activities carry no intrinsic value unless they
-are favourable for the satisfactory devotional service to the Lord. An impersonalist
-worshipper of five elements, bereft of devotional surrender, will only create more harm
-than good than any pure devotee who is sincerely practising the delicate process of
-satisfying the Supreme Lord. </p>
-</div>
-
- <h2 id="story40">The Idiot Gardener and Stupid Pandit </h2> 
-<p>A landlord had one gardener for tending his garden and one pandit in his court. Both of
-them were in the same in as much as one was a gardener knowing very little about plantcare, while the other one, although well-versed in letters, were short in common sense.
-One day while the landlord was taking a stroll in his garden, he saw by chance that the
-gardener was pretending to work very laboriously in watering the plants. The idiot
-gardener, in fact, used to carry a conviction that the leaves, branches and flowers should
-better be watered profusely because those are the products of a tree. So he was watering
-very meticulously each and every flower, every leaf and every branch one by one.
- Observing the idiot gardener doing thus, the landlord told him, What are you doing.
-Watering each and every flower, leaf and branch will not nourish the entire plant, rather it
-will die soon as the flowers and the leaves will go rotten from such direct watering.
-You’d better pour the water at the root, so that the entire plant will get water with less
-effort, and then it will grow nicely.
- After advising the stupid gardener, the landlord happen to meet the pandit in his room
-and found that he to was committing a great blunder. As the gardener was as illiterate as a
-fool, the pandit, on the other hand, although apparently learned, was a greater fool. The
-pandit was sitting in front of several dishes of delicious foods and was making small
-lumps out of the food putting those lumps one after the other into the cavities of his ears,
-nose, eyes, and on his hands and feet while reciting mantras like Om karmabhyam svaha,
-om nasikabhyam svaha om caksurbhyam svaha etc.
- The silly pandit firmly believed that the senses like the ears, nose, eyes, hands and feet
-are all the time working very hard and always fulfilling our various desires and therefore
-they should be satisfied first, before satisfying the stomach and the mouth. The landlord
-was astounded with the basic folly of the pandit and so he told him that all the senses are
-nourished automatically if you feed the stomach</p>
-<div class="purport">
-  <p>Srimad Bhagvatam says :
-<div class="verse">    
-yatha tarormula nisecanena
- trpyanti tat skandhobhujopasakhah
- prinopaharac ca yathendriyanam
- tathaiva sarvarhanam acyutejya
- </div>
- As pouring water on the root of a tree energizes the trunk, branches, twigs and
-everything else, and as supplying food to the stomach enlivens the senses and limbs of the
-body, simply worshipping the Supreme Personality of Godhead through devotional
-service automatically satisfies the demigods, who are parts of that Supreme Personality.
-(SB 4.31.14)</p>
-</div>
-
- <h2 id="story41">Open the Door to Allow the Light in Your Room </h2> 
-<p>A boy from a wealthy family was spoilt through over -indulgence. His parents used to
-fulfil all his fanciful desires and thus they did great harm to the boy. when the boy grew
-up as a young man he became more and more unruly. He concluded that the sun and
-moon must carry out his orders. One day the young man was sleeping in a room with all
-the doors closed. By late afternoon the parents of the boy thought their son was still
-sleeping because he might have worked very hard the night before. When midday was
-arriving , the parents became deeply anxious and started knocking at the door. Still in
-bed, the boy kept on telling,  Why are you knocking at my door in the dead of night ? I
-am not going to open it now. You must have come with some bad motive. Everyone
-outside was urging,  The sun has been up for a long time, now it is almost midday.
-Please open the door.
-The young man replied,  The midday sun must be very strong and if it is so, let him
-come into my room and show his strength. After all , I am not going to get up from my
-cosy comfortable bed . then everyone appealed ,  Will you open the door so that the
-sunlight will get into the room?</p>
-<div class="purport">
-  <p>Some people think that it is nothing but flattery to say that the Lord is all merciful. If the
-Lord was really merciful, how is it that there is so much suffering in the world? Some
-people even think that if Godhead was omnipotent, He should have changed our motives
-without out effort. There argument is similar to such a spoilt child. They have, in fact,
-encaged themselves in their own apparently cosy comfortable bedroom under illusionory
-energy.
- The sun distributes his light everywhere indiscriminately, for rich and poor, palace and
-cottage alike. Anyone who takes the trouble of opening his doors and windows will surely
-get sunlight. The Lord has also bestowed his mercy everywhere and every living entity,
-using his freewill, can enjoy it. 
-</p>
-</div>
-
- <h2 id="story42">How Often does a Bald Man Go Under a Bael Tree ? </h2> 
-<p>Once a shaven-headed man was going to market and happen to walk under a bael tree. By
-chance a big bael fruit fell on his head from his tree. It hurt him very much as he was
-shaven-headed. Next day, the same thing happen while he was passing again under the
-same bael tree. Thereafter, he never used to pass under that tree.
- After a few days, some of his friends were walking along with him on the same way and
-when they had to pass under that bael tree, the shaven-headed person refused to go that
-way, saying, How often does a shaven-headed man visit a bael tree? Similarly, no one
-having some bitter experience like to pass the same track in his life time</p>
-<div class="purport">
-  <p>A lot of people may not follow this very simple example while they suffer many times the
-same misery in this illusionary material world. They do seem to be as wise as the shavenheaded man in the story.
- An intelligent person comes to his senses from the very first bitter experience of
-illusionary suffering. One who frequently undergoes the same kind of misery, is nothing
-but an example of a most foolish entity.</p>
-</div>
-
- <h2 id="story43">Sleeping on the Bare Ground When the Bed is Broken
-</h2> 
-<p>A man required a bed as dowry from his father-in-law. In fact, the bed was very cheap
-and he was thus treated. Very soon the bed was broken and the man, just to save his face
-started speaking like a renunciate in respect of his material loss. He decided to sleep on
-the bare ground thereafter. He also started preaching to everyone that every object of
-pleasure and comfort is temporary and we should renounce everything without a sense of
-false attachment.</p>
-<div class="purport">
-  <p>True renunciation is not that one sleeps on the bare ground when the bed is broken. In
-fact, this reflects nothing but a motive for earning fame and appreciation for ones unusual
-activities. When an impersonalist or illusionist shows off his renunciation in this material
-world, he simple exposes himself to be in anger or deep attachment with those objects of
-apparent renunciation. He would have continued to enjoy those objects if they were of no
-trouble to him before.
- Pure devotees will never expose their spirit of renunciation in such a manner. They
-renounce everything for the satisfaction of the Supreme Personality of Godhead, Lord Sri
-Krsna. They know very well that the Lord is the Supreme enjoyer and that no living entity
-should have any desire for enjoyment for his own sake. A pure devotee is ever satisfied
-with the remnants obtained from the Lord as his causeless mercy, and he is never
-unhappy or attached with any such object. </p>
-</div>
-
- <h2 id="story44">Flying Popcorn - Govindaya Namah </h2> 
-<p>Harakanta Cakravati happened to be a famous Vaisnava in some village. People would
-say, Cakravati Thakura never enjoys anything without offering it to the Lord first. At
-the Pausa Sankranti festival, the Cakravati bought some popcorn from the market for his
-wife’s lunch. By chance there was a strong gale and the popcorn started blowing out of
-his paper-bag .
- At that time some of his acquaintances came to see him and feeling somehow awkward
-in that situation, Cakravati let the rest of the popcorn fly from his bag as if offering it to
-the Lord while chanting, Govindaya Namah! On the other hand, the wife of Cakravati
-became anxious because Cakravati was late and she asked her son to find his
-whereabouts.
- The innocent boy found his father on the way, among other persons and started telling
-him, Father, mother has been waiting for a long time for the popcorn. Where is the
-popcorn? Thus Cakravati was put to shame as the true fact was disclosed in front of
-several gentlemen.</p>
-<div class="purport">
-  <p>Those who are anxious for their sense gratification but outwardly pretend to be pious for
-earning name and fame, are just pretending to be pious. In fact, the popcorn was bought
-for self-satisfaction, but when it could not be enjoyed properly, offering it to the Lord was
-not real devotional service.
- When a materialistic person fails to protect his material gains in spite of all efforts, he
-may start saying, O Lord, You are the Lord of keeping as well as killing - that is not
-true surrender. </p>
-</div>
-
- <h2 id="story45">Spitting Upward </h2> 
-<p>A spoilt child once insisted that his parents should bring down the moon and the stars
-from the sky. However his parents tried hard to convince him that it is beyond one’s
-ability to even touch them, but the boy paid no heed to their words. Then the parents took
-the boy upon the roof of a very high skyscraper. Finding even then that the moon and the
-stars were still beyond reach, the boy became furious with the sky and shouted at it
-saying, Damn sky! Why do you have to hold the moon and the stars so high? Look how I
-will make you feel the evil consequences!
- As he was cursing thus, the idiot boy started spitting up at the sky in great disgust, but
-obviously every drop of his spit fell back in his face. </p>
-<div class="purport">
-  <p>Those who prefer to blaspheme the highest order of the spiritual master and the
-Vaisnavas, are simply attracting utter disgrace upon themselves. As such, it is advised
-that all insignificant living entities should better try to take shelter of the spiritual master
-and the Vaisnavas in order to be assured of their own well being. 
-</p>
-</div>
-
- <h2 id="story46">Cutting One’s Own Nose to Spoil Another’s Journey 
-</h2> 
-<p>In a village there lived two neighbouring friends in close affinity, but subsequently they
-were at odds with each other. One was named Susanta, and the other Kritanta. Susanta
-decided that it was better to go on pilgrimage for some time to be away from such
-bickering. So he fixed an auspicious day to start for Puri.
- Kritanta then found that there would be hardly any chance for him to harass Susanta if
-he left the village. So he decided that by hook or by crook Susanta should be made
-compelled to stay in the village so that there would be opportunities to pick a quarrel with
-him every now and then.
- Kritanta was in the know that Susanta believed in some unfounded weird superstitions.
-For instance, he considered it very, very inauspicious to see on the onset of a journey
-anyone whose nose is somehow or other amputated. So Kritanta seized upon the
-opportunity to amputate his own nose, just when Susanta was starting for Puri. He took a
-seat in front of Susanta’s house with his amputated nose exhibited conspicuously.
- As soon as Susanta came out of his house to begin his journey to Puri, he saw Kritanta
-with his amputated nose and immediately decided to cancel his journey</p>
-<div class="purport">
-  <p>Atheists behave similarly in plotting ominous designs even at their own heavy cost so that
-Vaisnavas can never make good progress in their devotional practices. These atheists do
-their own spiritual harm foolishly by creating disturbances on the way of the Vaisnavas
-journey towards Vaikunthaloka.</p>
-</div>
-
- <h2 id="story47">Lively Hell </h2> 
-<p>A pious God-conscious brahmana once advised a drunkard, Look here - for your own
-sake, give up wine. In the holy scriptures it is given that one who takes wine will go to
-hell.
- The drunkard replied, But Suren Babu also takes wine!
- The brahmana said, He will also go too hell.
- The drunkard said, Barun Babu also takes wine!
- The brahmana replied, He will also go to hell.
- The drunkard said, Arun Babu also takes wine!
- The brahmana replied, He will also go to hell. Whoever takes wine must go to hell.
- Then the brahmana asked, What else must one do to go to hell?
- The brahmana told him, Telling lies, stealing, cheating others, practising illicit sex -
-all take you to hell.
- So then the drunkard asked him, Then what will be the fate of Brahmini the
-prostitute?
- The brahmana answered, Hell.
- The drunkard paused a while and asked, Everyone who is a prostitute must go to hell?
- The brahmana replied, Yes.
- The drunkard then questioned further, And those who visit a prostitute’s house, where
-will they go?
- The brahmana said, Also to hell.
- The drunkard was then beside himself with joy and exclaimed, Oh, then there must be
-a hellish pandemonium in hell! If some men flock to hell, then it must be great fun! </p>
-<div class="purport">
-  <p>Many people in this material world take into their heads that there should be nothing to
-worry if many people commit heinous crimes in profusion. In fact, the fallen souls who
-never care for sincere devotional service to the Lord are in majority on this planet.
-Accordingly, the brute majority may remain complacent without practising devotional
-service to the Lord and may come to the conclusion that they will undergo the same fate
-as other atheists so what’s the use of approaching a few saintly persons to get to hear
-good sermons! Better to go by the majority.
- Thus many people become averse to devotional service to the Lord. This simply reflects
-the mode of passion.</p>
-</div>
-
- <h2 id="story48">Doing Sums for the Teacher 
-</h2> 
-<p>Once a landlord appointed a tutor for his son on a monthly salary of fifteen rupees plus a
-monthly stipend of another fifteen rupees for the tutor’s maintenance cost. The landlord’s
-son was very weak in mathematics, so the tutor would give him alot of sums too do by
-himself. In spite of the pupil’s insisting the tutor to do the sums for him, the tutor would
-tell him, If I do the sums for you, then you will never learn the methods. Rather, I would
-like to demonstrate the basic method of solving the sums, or at least I can assist you when
-you get confused. But you’ll have to do all your sums for your own practice. The boy
-was most inattentive and lazy. He had hardly any interest for learning maths, but he had
-to engage himself in practising maths with the tutor under pressure from his parents.
- One day he was loudly talking to his sidekicks so that his tutor could easily overhear
-him. For me my father has engaged a worthless tutor on a monthly salary of fifteen
-rupees plus an additional fifteen rupees for his food and clothing - in all thirty rupees a
-month! And look, I am still doing so many sums for him everyday. Really I can’t tolerate
-this anymore; this strain upon me while spending so much money and still taking the
-trouble of doing all the sums for him! Why should one pay him any salary when in fact I
-myself have to do all the sums? </p>
-<div class="purport">
-  <p>Many of us maintain a similar concept that we renounce our family life, we sacrifice alot
-in the service of our spiritual master, some of us collect donations and do alot of
-multifarious direct and indirect service for the satisfaction of our spiritual master, but
-what do we gain?
- Here we forget that we do such sums for our own benefit alone and by such services,
-we are ourselves are uplifted, not the spiritual master.
- The spiritual master knows the sums very well and it is only for our own well-being that
-he is getting the sums done by us. The spiritual master is engaging us in different services
-for our own satisfaction and welfare in the path of devotion. Those who are averse to their
-own benefit, only consider such services to be meant for the welfare of the spiritual
-master, for the temple complex, for the Vaisnavas, for the Lord, and thus foolishly take
-little interest in them.</p>
-</div>
-
- <h2 id="story49">Golden, Silver, and Iron Shackles </h2> 
-<p>There was once a prince, a minister’s son, and a treasurer’s son who were all close friends
-. Once upon a time, all three of them set out on a long journey to different distant lands.
-On the way they happened to arrive at a royal palace where the king of that land was
-absent, but his daughter, the princess, was staying there along with her two closest friends
-- one the minister’s daughter and the other the treasurers daughter of that land. Those
-three ladies were also similarly close friends like the prince, the minister’s son and the
-treasurer’s son mentioned above.
-The prince and his two friends exchanged their acquaintances with the princess and her
-two consorts. And it wasn’t long before the three young men proposed to marry those
-three damsels. But they hesitated as it was custom to get permission from their respective
-parents for the marriage. However, they decided to marry without further delay, according
-to the old saying anything auspicious should be hastened.
- So there happy marriages were solemnised. Thereafter the king of the land with his
-minister and treasurer came back from their travels and entered the royal palace only to
-see in great astonishment that their princess and their two consorts were chatting up with
-three young strangers. Upon hearing that those three men had trespassed into the royal
-palace only to flirt with the young women and talk them into an illegal marriage, the king
-ordered their arrest.
- The princess then begged her father to release her husband. The treasurer’s daughter
-and the ministers daughter also respectively fell on their knees in front of their fathers and
-begged them for their husbands’ release. However, the king did not release the young
-husbands, but ordered that proper respect should be shown to the young prince by tying
-him up with golden shackles, whereas the young son of the minister should be given
-silver shackles, and the treasurers son should be bound with iron shackles, all according
-to their respective status. </p>
-<div class="purport">
-  <p>The Supreme Lord binds up all living entities similarly in three types of shackles, namely
-the material modes according to the reactions of their respective fruitive activities. The
-bondage of goodness may very well be compared to golden shackles, that of passion to
-silver shackles, and the entanglement in ignorance is tantamount to iron shackles.
- Whatever might be the elements or metals with which the shackles are made, they are
-simply meant for imprisonment. Unless and until one goes beyond these three material
-modes or entanglements, one can never be considered free and liberated. Only one who
-completely surrenders unto the lotus feet of the Supreme Lord unconditionally may thus
-be delivered from such bondage. </p>
-</div>
-
- <h2 id="story50">The Pauper and the Omniscient Sage </h2> 
-<p>A very poor householder brahmana had to maintain a large number of children. The
-brahmana was almost a pauper and he lamented his prolonged poverty. The local people
-never cared to help him but used to ridicule him in many ways, saying that he actually
-possessed huge wealth and pretended to be a pauper with a motive to misappropriate
-money from others on false pretexts. Thus the brahmana was being scandalized without
-the slightest sympathy. As a result, the brahmana lived in utmost depression and wept all
-the time for his unprecedented misfortune.
- It just so happened that an omniscient saintly person once came to the brahmana and
-listened to his problems. The saintly person was in fact a omniscient sage and told the
-brahmana, O brahmana, you are lamenting unreasonably without knowing that your
-father had actually left for you a mass of wealth. Look out for that treasure, and you will
-find it buried somewhere in your own courtyard.
- Upon hearing this, the brahmana immediately started digging a place on the southern
-side of his house, when the omniscient sage warned him saying, O brahmana! You must
-be aware that there you will find something more dangerous than the hornet. On that
-north side, there lives a black snake and it will surely devour you, then there will be no
-chance of getting the treasure.
- Then the brahmana turned to the west side and just started digging in search of the
-hidden treasure, when the enlightened sage advised him saying, O brahmana! You must
-be even more careful now. Here a ghost is staying appointed to guard your father’s hidden
-treasure. He will kill you.
- Now the brahmana came to his wit’s end and entreated the sage,  o master! You to are
-mocking me. As you may know, I am a completely dejected pauper. Please don’t harass
-me like this any more.
-The kind-hearted sage told him at last,  Don’t get impatient. You should know very well
-that there must be a lot of hindrances before arriving at the ultimate goal. Your father had
-possessed great intelligence and so he buried the treasure on the east side, while keeping
-several unusual sentries on all other sides for protecting the wealth. Have a little more
-patience and just start digging at the east side of your courtyard where you will reach the
-fortune.
-The brahmana was then encouraged to dig on the east side as advised and got the hidden
-treasure in no time. Thereafter he was wealthy for the rest of his life. </p>
-<div class="purport">
-  <p>Narrated by Sri Caitanyadeva, this story confirms that our Supreme Father has left enough
-hidden treasure for us and our spiritual master comes into our life to lead us perfectly to
-obtain that treasure . But we should be very careful to avoid going in the wrong
-directions. In case our efforts are directed towards fruitive activities with a material
-motive then we suffer from unending desires. On the other hand, if we are inclined to
-renounce everything then it will be suicidal in the field of the transcendental way of
-living.
- And, at the last, if we are interested in the yogic practice, it will simply pollute our
-spiritual lives. So, the best method is to take up the devotional aspect of living, which
-surely helps us in achieving the real wealth without any danger.</p>
-</div>
-      
-  </main>
-
-  <button id="backToTop" aria-label="Back to top">↑</button>
-
- <script>
-  // Generate TOC
-  const toc = document.getElementById("toc");
-  document.querySelectorAll("main h2").forEach((h, i) => {
-    const id = `story${i+1}`;
-    h.id = id;
-    const li = document.createElement("li");
-    const a = document.createElement("a");
-    a.href = `#${id}`;
-    a.textContent = h.textContent;
-    li.appendChild(a);
-    toc.appendChild(li);
-  });
-
-  // Menu toggle
-  const menuToggle = document.getElementById("menuToggle");
-  menuToggle.addEventListener("click", () => {
-    toc.classList.toggle("show");
-    menuToggle.setAttribute("aria-expanded", toc.classList.contains("show"));
-  });
-
-  // Smooth scroll for TOC links
-  document.querySelectorAll('#toc a').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(link.getAttribute('href'));
-      const offset = document.querySelector('header').offsetHeight + document.querySelector('nav').offsetHeight;
-      window.scrollTo({
-        top: target.offsetTop - offset,
-        behavior: 'smooth'
-      });
-
-      // Only close menu on mobile (width <= 768px)
-      if (window.innerWidth <= 768) {
-        toc.classList.remove('show');
-        menuToggle.setAttribute("aria-expanded", "false");
-      }
-    });
-  });
-
-  // Back to top button
-  const backToTop = document.getElementById("backToTop");
-  window.addEventListener("scroll", () => {
-    backToTop.style.display = window.scrollY > 300 ? "block" : "none";
-  });
-  backToTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  // Close TOC if clicked outside (desktop + mobile)
-  document.addEventListener('click', e => {
-    if (!toc.contains(e.target) && !menuToggle.contains(e.target)) {
-      // Only close if mobile OR menu is open
-      if (window.innerWidth <= 768 || toc.classList.contains('show')) {
-        toc.classList.remove('show');
-        menuToggle.setAttribute("aria-expanded", "false");
-      }
-    }
-  });
-</script>
-
-
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Lora:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&family=Noto+Serif&display=swap"
+            rel="stylesheet"
+        />
+        <title>Upakhyane Upadesa</title>
+        <style>
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family: "Inter", sans-serif;
+                background: #f7fbff;
+                color: #222;
+                line-height: 1.6;
+                font-size: 16px;
+            }
+            header {
+                background: linear-gradient(90deg, #0d47a1, #1976d2);
+                color: #fff;
+                padding: 20px 15px;
+                text-align: center;
+            }
+            header h1 {
+                font-family: "Lora", serif;
+                font-size: 2rem;
+                margin-bottom: 5px;
+            }
+            header h3 {
+                font-family: "Open Sans", sans-serif;
+                font-weight: 400;
+                font-size: 1rem;
+                opacity: 0.9;
+            }
+            main {
+                max-width: 900px;
+                margin: auto;
+                padding: 30px 20px;
+                min-height: 100vh;
+            }
+            h2 {
+                font-family: "Lora", serif;
+                font-size: 1.8rem;
+                color: #0d47a1;
+                margin-top: 40px;
+                border-bottom: 3px solid #f4c430;
+                padding-bottom: 8px;
+                letter-spacing: 0.5px;
+            }
+            p {
+                margin: 15px 0;
+                text-align: justify;
+                font-size: 1rem;
+                color: #333;
+            }
+            .purport {
+                background: #e3f2fd;
+                border-left: 5px solid #36a420;
+                padding: 20px;
+                margin: 20px 0;
+                border-radius: 8px;
+                font-family: "Lora", serif;
+                line-height: 1.7;
+                color: #2e3c50;
+            }
+            .verse {
+                font-family: "Noto Serif", serif;
+                font-size: 1.2rem;
+                line-height: 1.5;
+                white-space: pre-line;
+                text-align: center;
+                margin: 20px auto;
+                max-width: 500px;
+                padding: 15px;
+                border-left: 5px solid #9d273c;
+                background: #f9f5f0;
+                color: #333;
+                border-radius: 5px;
+            }
+            #backToTop {
+                position: fixed;
+                bottom: 25px;
+                right: 25px;
+                background: #1877f2;
+                color: white;
+                border: none;
+                padding: 15px 18px;
+                border-radius: 50%;
+                font-size: 1.3rem;
+                cursor: pointer;
+                display: none;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                transition:
+                    background 0.3s,
+                    transform 0.2s;
+            }
+            #backToTop:hover {
+                background: #0d47a1;
+                transform: scale(1.1);
+            }
+            @media (max-width: 768px) {
+                header h1 {
+                    font-size: 1.6rem;
+                }
+                header h3 {
+                    font-size: 0.9rem;
+                }
+                main {
+                    padding: 20px 15px;
+                }
+                h2 {
+                    font-size: 1.5rem;
+                }
+                .verse {
+                    font-size: 1.1rem;
+                    max-width: 95%;
+                    padding: 12px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Upakhyane Upadesa</h1>
+            <h3>
+                Instructive Stories from Srila Bhaktisiddhanta Sarasvati Thakura
+            </h3>
+        </header>
+
+        <main id="content">
+            <h2 id="story8">There Runs the Thief!</h2>
+            <p>
+                There was once a village that was plagued with constant theft.
+                The villagers were unable to detect the thief in spite of all
+                efforts. Whenever the people were alerted, the thief would run
+                away. A hue and cry would be raised by the people, and the
+                villagers gathered only to be disappointed. Finally, the headman
+                in the village called for all the victims of the theft
+                individually and questioned them in confidence. Upon a through
+                inquiry, he discovered that one particular person was found to
+                be present and anxious to find out the thief every time there
+                had been a crime. The village headman became suspicious at this
+                coincidence. Therefore he devised a plan and advised the village
+                guard to keep an eye on the suspected person at his house from
+                midnight and report his movements. The headman himself was also
+                carefully watching the guard and regularly supervised his
+                duties. One night the guard saw the suspect coming out of his
+                house at about 2 o' clock, hiding a burglar's tool for
+                house-breaking under his shawl. As the guard followed him,
+                making sure that he was hidden from view, he observed the
+                suspected man breaking through the wall of a villager's house
+                with the help of a burglar's tool. After a while, the house
+                owner started screaming, Thief, thief!!, and the guard watched
+                as the suspected man came out of the house with the stolen goods
+                and hurriedly entered into the nearby jungle. When the villagers
+                gathered as usual after the house owner started screaming for
+                help, the suspected man came out of the opposite side of the
+                jungle and innocently joined the crowd of villagers inquiring
+                about the incident. He was just pretending to look for the thief
+                and running up and down in all directions. Thus coming across
+                the village guard patrolling nearby, he caught hold of him and
+                started shouting, Here is the burglar, here is the burglar!.
+                Attracted by his screaming, the people gathered around them and
+                started jeering at the guard, taking him to be the burglar. Some
+                of them were preparing to beat him. Luckily, the village headman
+                appeared on the spot and appeasing them, he took the guard to
+                the side and asked him to give a complete report on the
+                incident. He advised some other villagers to observe the
+                reactions of the man who was the real culprit. Thereafter, he
+                proceeded towards the jungle as directed by the guard, along
+                with other people, while the thief repeatedly asked them, Why on
+                earth are you going into the jungle for the burglar? On this
+                dark night, that snake-infested jungle is most dangerous. No
+                burglar can hide himself in there, for sure! When everyone was
+                walking into the jungle, disregarding his constant grumbling,
+                the man started gradually backing away with the idea of running
+                off. It appeared from his face that he was greatly frightened.
+                Eventually, the jewellery box which the thief had taken from the
+                villager's house was found in the jungle along with the
+                burglar's tool. It was then crystal-clear to everyone present
+                that the man complaining was the burglar himself, and so the
+                crowd ran out of the jungle and started chasing him. As he was
+                running away, they all shouted out, There goes the thief, there
+                goes the thief!. The cunning thief also started shouting while
+                running, There goes the thief, there goes the thief, and
+                pointing to all the innocent passers-by, he got away by creating
+                an utter confusion.
+            </p>
+
+            <div class="purport">
+                <p>
+                    There is no dearth of such mischievous atheists among the
+                    people. They constantly malign the real protectors of the
+                    society who are like watchmen, and harass those great souls
+                    who are truly and selflessly benevolent to common people,
+                    only to tarnish their reputation by a vile attempt to prove
+                    those saintly persons as 'thieves' and the like. In all
+                    Vedic literature, Gita, Bhagavata, Upanisads etc., it has
+                    been specifically advocated that this material world belongs
+                    to the Supreme Lord, he is the proprietor of everything, and
+                    one who does not offer everything to the Supreme Lord for
+                    His satisfaction through preaching His glories and the holy
+                    name, simply devours His property for one's own sense
+                    gratification, and as such, he is a thief. Such a thief is
+                    always endeavouring to indicate that any person who is
+                    preaching the holy name of the Supreme Godhead, and going
+                    from door to door in order to wake everyone up from their
+                    illusory state of living, is only worthless, idle and a
+                    thief of social wealth. This is just like the motivated
+                    tendency of a thief who points to a sadhu as if he is
+                    running away from a burglary. This is the normal practice we
+                    find in this age of Kali. The famous poet Tulasi das wrote
+                    long ago thus:
+                </p>
+                <div class="verse">
+                    corko chode sadhko bandhe, pathikko lagaoe phansi dhanya
+                    kalijug teri tamasa, duhkh lage aor hasi
+                </div>
+                <p>
+                    The real thief is released, the saintly person is tied up,
+                    and the passer-by is hanged - all glories to Kali yuga, such
+                    is your great joke that creates pity as well as laughter.
+                    Some traders who deal in so-called religion, holy
+                    scriptures, Gita, Bhagavata, and the Deities of Godhead as
+                    their economic profession, try to equate selfless preachers
+                    of the holy name of Lord Hari and the preaching of real
+                    saintly persons as an illicit greed for money like a
+                    professional person. They used to say mischievously that one
+                    should not only condemn materialistic persons when even the
+                    saintly persons need money. In fact, this is just like
+                    branding a watchman as a burglar. Money collected by saintly
+                    persons for the welfare of the entire world in favour of
+                    preaching the holy name of Lord Sri Hari, is not meant for
+                    spending on maintenance of family members like a
+                    professional family-man, or for indulging in some illicit
+                    misdemeanour, or personal sense gratification. Real saintly
+                    persons collect money and use it wisely. That money is very
+                    carefully spent in preaching the holy name and opulences of
+                    the original proprietor and the Lord of the goddess Laksmi
+                    in order to ensure eternal welfare to all atheistic,
+                    conditioned living entities of this material world. In fact,
+                    persons who try to steal the wealth of the Lord of Laksmi,
+                    make an attempt to confuse common people by creating a false
+                    hue and cry by pointing at real saintly persons and showing
+                    - There goes the thief, there goes the thief! The envious
+                    impersonalists only make an attempt to hide themselves with
+                    their innate polluted character by shouting out at the
+                    saintly persons, thief, thief!
+                </p>
+            </div>
+        </main>
+
+        <button id="backToTop" aria-label="Back to top">&#8593;</button>
+
+        <script>
+            const backToTop = document.getElementById("backToTop");
+            window.addEventListener("scroll", () => {
+                backToTop.style.display =
+                    window.scrollY > 300 ? "block" : "none";
+            });
+            backToTop.addEventListener("click", () => {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            });
+        </script>
+    </body>
 </html>
